@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
+    <style>
+        /* Custom styles for the sidebar */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 250px;
+            padding: 20px;
+            background-color: #007bff; /* Blue background color */
+            transition: all 0.3s;
+        }
+
+        /* Custom styles for the links in the sidebar */
+        .sidebar a {
+            color: #fff; /* White text color */
+            text-decoration: none;
+        }
+
+        /* Custom styles for the collapsed sidebar */
+        .sidebar.collapsed {
+            width: 80px;
+        }
+
+        .sidebar.collapsed a {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div class="sidebar">
+    <h2>Borrow Flow</h2>
+    <ul class="nav flex-column">
+        <li class="nav-item">
+            <a class="nav-link active" href="#">Dashboard</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/listdebtors">Debtors</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Reports</a>
+        </li>
+    </ul>
+</div>
+
+<div class="container-fluid text-center ">
+    <h2>Borrow Flow</h2>
+    <h3>Dashboard</h3>
+</div>
+
+
+</body>
+</html>
