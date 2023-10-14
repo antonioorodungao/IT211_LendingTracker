@@ -42,6 +42,7 @@ public class LoanController {
     public String addLoan(Loan loan, RedirectAttributes ra) {
         loanService.save(loan);
         ra.addAttribute("id", loan.getBorrowerId());
+        ra.addFlashAttribute("message", "The loan has been added.");
         return "redirect:/borrower/view";
     }
 }

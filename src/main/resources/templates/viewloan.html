@@ -59,6 +59,11 @@
                 </tbody>
             </table>
         </div>
+
+        <div class="alert alert-success text-center alert-dismissible" th:if="${message}">
+            [[${message}]]
+        </div>
+
         <div>
             <form th:action="@{/payment/add}" method="post" th:object="${newPayment}"
                   style="max-width: 500px; margin:0 auto;">
@@ -81,7 +86,6 @@
             </form>
         </div>
     </div>
-
 
     <div class="container-fluid text-center">
         <h1>Payments</h1>

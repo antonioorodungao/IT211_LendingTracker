@@ -35,7 +35,7 @@ public class BorrowerController {
     @PostMapping("/borrower/save")
     public String saveDebtor(Borrower borrower, RedirectAttributes ra) {
         debtorService.save(borrower);
-        ra.addFlashAttribute("message", "The debtor has been saved.");
+        ra.addFlashAttribute("message", "The borrower has been added.");
         return "redirect:/listdebtors";
     }
 
@@ -84,6 +84,7 @@ public class BorrowerController {
     @GetMapping("/listdebtors")
     public String listLenders(Model model) {
         System.out.println("Debtor list");
+        model.addAttribute("borrower", new Borrower());
         model.addAttribute("debtorlist", debtorService.listDebtors());
         return "listdebtors";
     }

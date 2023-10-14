@@ -64,12 +64,14 @@ public class DashboardService {
             dashboardTransaction.setAmount(payment.getInterestPayment());
             dashboardTransactionService.saveDashboardTransactions(dashboardTransaction);
             addAmountToLoanableFund(payment.getInterestPayment());
-        } else if(!Objects.isNull(payment.getPrincipalPayment()) &&!payment.getPrincipalPayment().equals(BigDecimal.ZERO)){
+        }
+
+        if(!Objects.isNull(payment.getPrincipalPayment()) &&!payment.getPrincipalPayment().equals(BigDecimal.ZERO)){
             DashboardTransaction dashboardTransaction = new DashboardTransaction();
             dashboardTransaction.setOperation("Principal Payment");
             dashboardTransaction.setSource("Payment");
             dashboardTransaction.setSourceId(payment.getPaymentId());
-            dashboardTransaction.setAmount(payment.getInterestPayment());
+            dashboardTransaction.setAmount(payment.getPrincipalPayment());
             dashboardTransactionService.saveDashboardTransactions(dashboardTransaction);
             addAmountToLoanableFund(payment.getPrincipalPayment());
         }

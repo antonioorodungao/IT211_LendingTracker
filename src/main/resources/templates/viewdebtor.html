@@ -54,6 +54,9 @@
         </div>
     </div>
 
+    <div class="alert alert-success text-center alert-dismissible" th:if="${message}">
+        [[${message}]]
+    </div>
     <div>
         <form th:action="@{/loan/add}" method="post" th:object="${newLoan}" style="max-width:500px; margin:0 auto;">
             <div class="border border-secondary rounded p-3">
@@ -84,6 +87,8 @@
             </div>
         </form>
     </div>
+
+
 
     <div class="container-fluid text-center ">
         <div><h1>Loans</h1></div>

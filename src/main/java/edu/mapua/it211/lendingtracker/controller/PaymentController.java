@@ -19,6 +19,7 @@ public class PaymentController {
         paymentService.save(payment);
         ra.addAttribute("borrowerId", payment.getBorrowerId());
         ra.addAttribute("loanId", payment.getLoanId());
+        ra.addFlashAttribute("message", "The payment has been added.");
         return "redirect:/loan/view";
     }
 }
