@@ -1,7 +1,7 @@
 package edu.mapua.it211.lendingtracker.service;
 
 import edu.mapua.it211.lendingtracker.exceptions.DebtorNotFoundException;
-import edu.mapua.it211.lendingtracker.model.Debtor;
+import edu.mapua.it211.lendingtracker.model.Borrower;
 import edu.mapua.it211.lendingtracker.repository.DebtorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,21 +15,21 @@ public class DebtorService {
     @Autowired
     private DebtorRepository debtorRepository;
 
-    public List<Debtor> listDebtors(){
+    public List<Borrower> listDebtors(){
         return debtorRepository.findAll();
     }
 
-    public void save(Debtor debtor){
-        debtor.setBorrowerId(debtor.generateID());
-        debtorRepository.save(debtor);
+    public void save(Borrower borrower){
+        borrower.setBorrowerId(borrower.generateID());
+        debtorRepository.save(borrower);
     }
 
     public void deleteAll(){
         debtorRepository.deleteAll();
     }
 
-    public Debtor get(String id) throws DebtorNotFoundException {
-           Optional<Debtor> result = debtorRepository.findById(id);
+    public Borrower get(String id) throws DebtorNotFoundException {
+           Optional<Borrower> result = debtorRepository.findById(id);
            if(result.isPresent()){
                return result.get();
            }else{

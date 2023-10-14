@@ -10,10 +10,10 @@ import java.math.BigDecimal;
 public interface DashboardRepository extends MongoRepository<Dashboard, Long> {
 
 
-    Dashboard getDashboardByDashId();
+    @Query("{}")
+    @Update("{$set: { 'loanableFund' : ?0 }}")
+    void updateLoanableFund(BigDecimal additionalAmount);
 
-    @Query("{ 'dashId' : ?0 }")
-    @Update("{$set: { 'cashOnHand' : ?1 }}")
-    void updateCashonHandByDashId(Long id, BigDecimal additionalAmount);
-
+    @Query("{dashboardId: ?0}")
+    Dashboard find(Long dashboardId);
 }

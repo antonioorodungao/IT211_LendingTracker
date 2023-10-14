@@ -1,10 +1,9 @@
 package edu.mapua.it211.lendingtracker;
 
-import edu.mapua.it211.lendingtracker.model.Debtor;
+import edu.mapua.it211.lendingtracker.model.Borrower;
 import edu.mapua.it211.lendingtracker.model.Loan;
 import edu.mapua.it211.lendingtracker.model.Payment;
-import edu.mapua.it211.lendingtracker.repository.DebtorRepository;
-import edu.mapua.it211.lendingtracker.repository.LoanRepository;
+import edu.mapua.it211.lendingtracker.service.DashboardService;
 import edu.mapua.it211.lendingtracker.service.DebtorService;
 import edu.mapua.it211.lendingtracker.service.LoanService;
 import edu.mapua.it211.lendingtracker.service.PaymentService;
@@ -30,6 +29,11 @@ public class LendingTrackerApplication implements CommandLineRunner {
     @Autowired
     PaymentService paymentService;
 
+    @Autowired
+    DashboardService dashboardService;
+
+
+
     public static void main(String[] args) {
         SpringApplication.run(LendingTrackerApplication.class, args);
     }
@@ -38,13 +42,16 @@ public class LendingTrackerApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
         debtorService.deleteAll();
         loanService.deleteAll();
-        addLenderProfiles();
+        dashboardService.deleteAll();
+        dashboardService.initDashboard();
+        addBorrowerProfiles();
     }
 
-    void addLenderProfiles() {
-        debtorService.save(new Debtor("Antonio", "Dungao", "antoniodungao@yahoo.com", "09123456789"));
-        debtorService.save(new Debtor("John", "Doe", "johndoe@yahoo.com", "09123456789"));
-        debtorService.save(new Debtor("Jane", "Doe", "janedoe@yahoo.com", "09123456789"));
+
+    void addBorrowerProfiles() {
+        debtorService.save(new Borrower("Antonio", "Dungao", "antoniodungao@yahoo.com", "09123456789"));
+        debtorService.save(new Borrower("John", "Doe", "johndoe@yahoo.com", "09123456789"));
+        debtorService.save(new Borrower("Jane", "Doe", "janedoe@yahoo.com", "09123456789"));
 
         Loan loan = new Loan();
         loan.setBalance(new BigDecimal(1000));
@@ -72,5 +79,6 @@ public class LendingTrackerApplication implements CommandLineRunner {
         p.setBorrowerId(loan.getBorrowerId());
         p.setLoanId(loan.getLoanId());
         paymentService.save(p);
+
     }
 }

@@ -16,6 +16,12 @@ public class PaymentService {
     @Autowired
     private MongoSequenceGenerator mongoSequenceGenerator;
 
+    @Autowired
+    private LoanService loanService;
+
+    @Autowired
+    private DashboardService dashboardService;
+
     public void deleteAll(){
         paymentRepository.deleteAll();
     }
@@ -32,6 +38,8 @@ public class PaymentService {
         payment.setPaymentId(mongoSequenceGenerator.generateSequence("sequencepaymentid"));
         payment.setPaymentDate(LocalDate.now());
         paymentRepository.save(payment);
+        loanService.reducePrincipal(payment);
+        dashboardService.registerPayment(payment);
     }
 
 }

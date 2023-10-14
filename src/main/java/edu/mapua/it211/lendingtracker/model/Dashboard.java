@@ -9,10 +9,13 @@ import java.math.BigDecimal;
 @Document("dashboard")
 @Data
 public class Dashboard {
+
     @Id
-    private Long dashId;
-    private BigDecimal cashOnHand; //amount available for loaning
-    private BigDecimal outstandingLoans; //total amount handed
-    private BigDecimal currentMonthRevenue; //total interest this month
+    private Long dashboardId;
+    private BigDecimal loanableFund; //amount available for loaning
+    private BigDecimal totalAmountLoaned; //total amount handed
+    private BigDecimal totalInterest; //total interest
     private BigDecimal totalRevenue; //total interest since inception
 }
+
+

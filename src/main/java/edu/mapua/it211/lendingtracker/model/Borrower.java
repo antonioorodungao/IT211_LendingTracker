@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 @Document("debtors")
 @Data
-public class Debtor {
+public class Borrower {
 
     @Id
     private String borrowerId;
@@ -24,10 +24,10 @@ public class Debtor {
         this.registrationDate = LocalDateTime.now();
     }
 
-    public Debtor(){
+    public Borrower(){
 
     }
-    public Debtor(String firstName, String lastName, String email, String mobileNumber) {
+    public Borrower(String firstName, String lastName, String email, String mobileNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;

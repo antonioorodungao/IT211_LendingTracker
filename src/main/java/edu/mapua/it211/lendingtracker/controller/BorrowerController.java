@@ -1,7 +1,7 @@
 package edu.mapua.it211.lendingtracker.controller;
 
 import edu.mapua.it211.lendingtracker.exceptions.DebtorNotFoundException;
-import edu.mapua.it211.lendingtracker.model.Debtor;
+import edu.mapua.it211.lendingtracker.model.Borrower;
 import edu.mapua.it211.lendingtracker.model.Loan;
 import edu.mapua.it211.lendingtracker.service.DebtorService;
 import edu.mapua.it211.lendingtracker.service.LoanService;
@@ -11,12 +11,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
 @Controller
-public class DebtorController {
+public class BorrowerController {
 
     @Autowired
     private DebtorService debtorService;
@@ -24,50 +25,54 @@ public class DebtorController {
     @Autowired
     private LoanService loanService;
 
-    @GetMapping("/debtor/new")
+    @GetMapping("/borrower/new")
     public String addDebtor(Model model) {
-        model.addAttribute("debtor", new Debtor());
+        model.addAttribute("borrower", new Borrower());
         model.addAttribute("pagetTitle", "New Debtor");
-        return "adddebtor";
+        return "addborrower";
     }
 
-    @PostMapping("/debtor/save")
-    public String saveDebtor(Debtor debtor, RedirectAttributes ra) {
-        debtorService.save(debtor);
+    @PostMapping("/borrower/save")
+    public String saveDebtor(Borrower borrower, RedirectAttributes ra) {
+        debtorService.save(borrower);
         ra.addFlashAttribute("message", "The debtor has been saved.");
         return "redirect:/listdebtors";
     }
 
 
-    @GetMapping("/debtor/deactivate/{id}")
-    public String deactivate(@PathVariable("id") String id, RedirectAttributes ra) {
+    @GetMapping("/borrower/deactivate")
+    public String deactivate(@RequestParam("id") String id, RedirectAttributes ra) {
         debtorService.deleteDebtor(id);
         ra.addFlashAttribute("message", "The debtor has been deactivated.");
         return "redirect:/listdebtors";
     }
 
 
-    @GetMapping("/debtor/edit/{id}")
-    public String showEditForm(@PathVariable("id") String id, Model model, RedirectAttributes ra) {
+    @GetMapping("/borrower/edit")
+    public String showEditForm(@RequestParam("id") String id, Model model, RedirectAttributes ra) {
         try {
-            Debtor debtor = debtorService.get(id);
-            model.addAttribute("debtor", debtor);
+            Borrower borrower = debtorService.get(id);
+            model.addAttribute("debtor", borrower);
             model.addAttribute("pageTitle", "Edit Lender (ID: " + id + ")");
-            return "adddebtor";
+            return "addborrower";
         } catch (DebtorNotFoundException e) {
             ra.addFlashAttribute("message", e.getMessage());
             return "redirect:/listdebtor";
         }
     }
 
-    @GetMapping("/debtor/view/{id}")
-    public String showDebtor(@PathVariable("id") String debtorId, Model model, RedirectAttributes ra) {
+    @GetMapping("/borrower/view")
+    public String showDebtor(@RequestParam("id") String borrowerId, Model model, RedirectAttributes ra) {
         try {
-            Debtor debtor = debtorService.get(debtorId);
-            List<Loan> debtorLoans= loanService.getLoans(debtorId);
-            model.addAttribute("debtor", debtor);
-            model.addAttribute("debtorLoans", debtorLoans);
-            model.addAttribute("pageTitle", "View Debtor (ID: " + debtorId + ")");
+            Borrower borrower = debtorService.get(borrowerId);
+            List<Loan> debtorLoans= loanService.getLoans(borrowerId);
+            model.addAttribute("borrower", borrower);
+            model.addAttribute("borrowerLoans", debtorLoans);
+            String pageTitle = "View Borrower (" + borrower.getFirstName() + " " + borrower.getLastName() + ")";
+            model.addAttribute("pageTitle",pageTitle );
+            Loan loan = new Loan();
+            loan.setBorrowerId(borrowerId);
+            model.addAttribute("newLoan", loan);
             return "viewdebtor";
         } catch (DebtorNotFoundException e) {
             ra.addFlashAttribute("message", e.getMessage());
