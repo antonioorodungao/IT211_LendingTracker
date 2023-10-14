@@ -20,6 +20,25 @@
                 $('.alert').fadeOut();
             }, 2000);
         });
+
+        function validateAddFundForm(event) {
+            var addFundAmount = parseFloat(document.getElementById('addFundAmount').value);
+
+            if (isNaN(addFundAmount) || addFundAmount <= 0 || !addFundAmount) {
+                event.preventDefault();
+                alert('Add Fund amount should be a numeric value greater than 0.');
+            }
+        }
+
+        function validateWithdrawFundForm(event) {
+            var withdrawFundAmount = parseFloat(document.getElementById('withdrawFundAmount').value);
+
+            if (isNaN(withdrawFundAmount) || withdrawFundAmount <= 0 || !withdrawFundAmount) {
+                event.preventDefault();
+                alert('Withdraw Fund amount should be a numeric value greater than 0.');
+            }
+        }
+
     </script>
 </head>
 <body>
@@ -60,9 +79,9 @@
                 <div class="border border-secondary p-2 rounded d-flex justify-content-center">
                     <div class="form-group row align-items-center">
                         <label class="col-sm-4 col-form-label">Add Fund</label>
-                        <div class="col-sm-4"><input class="form-control" type="text" th:field="*{amount}"></div>
+                        <div class="col-sm-4"><input class="form-control" id="addFundAmount" type="text" th:field="*{amount}"></div>
                         <div class="col-sm-4">
-                            <button class="btn btn-primary" type="submit">Add</button>
+                            <button class="btn btn-primary" type="submit" onclick="validateAddFundForm(event)">Add</button>
                         </div>
                     </div>
 
@@ -75,9 +94,9 @@
                 <div class="border border-secondary p-2 rounded d-flex justify-content-center">
                     <div class="form-group row align-items-center">
                         <label class="col-sm-4 col-form-label">Withdraw Fund</label>
-                        <div class="col-sm-4"><input class="form-control" type="text" th:field="*{amount}"></div>
+                        <div class="col-sm-4"><input class="form-control" id="withdrawFundAmount" type="text" th:field="*{amount}"></div>
                         <div class="col-sm-4">
-                            <button class="btn btn-primary" type="submit">Withdraw</button>
+                            <button class="btn btn-primary"type="submit" onclick="validateWithdrawFundForm(event)">Withdraw</button>
                         </div>
                     </div>
 

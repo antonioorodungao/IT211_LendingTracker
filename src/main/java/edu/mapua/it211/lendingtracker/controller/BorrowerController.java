@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -25,17 +24,17 @@ public class BorrowerController {
     @Autowired
     private LoanService loanService;
 
-    @GetMapping("/borrower/new")
-    public String addDebtor(Model model) {
-        model.addAttribute("borrower", new Borrower());
-        model.addAttribute("pagetTitle", "New Debtor");
-        return "addborrower";
-    }
+//    @GetMapping("/borrower/new")
+//    public String addDebtor(Model model) {
+//        model.addAttribute("borrower", new Borrower());
+//        model.addAttribute("pagetTitle", "New Debtor");
+//        return "editborrower";
+//    }
 
     @PostMapping("/borrower/save")
     public String saveDebtor(Borrower borrower, RedirectAttributes ra) {
         debtorService.save(borrower);
-        ra.addFlashAttribute("message", "The borrower has been added.");
+        ra.addFlashAttribute("message", "The borrower has been added/updated.");
         return "redirect:/listdebtors";
     }
 
@@ -52,9 +51,9 @@ public class BorrowerController {
     public String showEditForm(@RequestParam("id") String id, Model model, RedirectAttributes ra) {
         try {
             Borrower borrower = debtorService.get(id);
-            model.addAttribute("debtor", borrower);
+            model.addAttribute("borrower", borrower);
             model.addAttribute("pageTitle", "Edit Lender (ID: " + id + ")");
-            return "addborrower";
+            return "editborrower";
         } catch (DebtorNotFoundException e) {
             ra.addFlashAttribute("message", e.getMessage());
             return "redirect:/listdebtor";

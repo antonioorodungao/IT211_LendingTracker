@@ -6,6 +6,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="text/javascript" th:src="@{/webjars/bootstrap/5.3.2/js/bootstrap.bundle.min.js}"></script>
     <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/5.3.2/css/bootstrap.min.css}"/>
+    <script>
+        // Wait for the document to be ready
+        $(document).ready(function () {
+            // Close the alert when the close button is clicked
+            $('.alert .close').on('click', function () {
+                $(this).closest('.alert').fadeOut();
+            });
+
+            // Automatically dismiss the alert after 2 seconds
+            setTimeout(function () {
+                $('.alert').fadeOut();
+            }, 2000);
+        });
+
+
+        function validateForm(event) {
+            var principal = parseFloat(document.getElementById('principal').value);
+            var interestRate = parseFloat(document.getElementById('interestRate').value);
+            var datePromised = document.getElementById('datePromised').value;
+
+            if (isNaN(principal) || principal <= 0 || !principal) {
+                event.preventDefault();
+                alert('Principal should be a numeric value greater than 0.');
+            } else if (isNaN(interestRate) || interestRate <= 0 || !interestRate) {
+                event.preventDefault();
+                alert('Interest Rate should be a numeric value greater than 0.');
+            } else if (!datePromised) {
+                event.preventDefault();
+                alert('Date Promised should not be empty.');
+            }
+        }
+    </script>
 </head>
 <body>
 <nav class="navbar navbar-expand-sm bg-primary navbar-dark">
@@ -54,40 +86,47 @@
         </div>
     </div>
 
-    <div class="alert alert-success text-center alert-dismissible" th:if="${message}">
+    <div class="alert alert-success text-center alert-dismissible fade show" th:if="${message}" role="alert">
         [[${message}]]
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
     </div>
-    <div>
+
+    <div class="container-fluid">
         <form th:action="@{/loan/add}" method="post" th:object="${newLoan}" style="max-width:500px; margin:0 auto;">
-            <div class="border border-secondary rounded p-3">
+            <div class="border border-secondary rounded p-2">
                 <input type="hidden" th:field="*{borrowerId}"/>
-                <div class="form-group row">
+                <div class="form-group row mb-2">
                     <label class="col-sm-4 col-form-label">Principal</label>
                     <div class="col-sm-8">
                         <input type="text" class="form-control" th:field="*{principal}"/>
                     </div>
                 </div>
-                <div class="form-group row">
+                <div class="form-group row mb-2">
                     <label class="col-sm-4 col-form-label">Interest Rate</label>
                     <div class="col-sm-8">
                         <input type="text" class="form-control" th:field="*{interestRate}"/>
                     </div>
                 </div>
-                <div class="form-group row">
+                <div class="form-group row mb-2">
                     <label class="col-sm-4 col-form-label">Date Promised</label>
                     <div class="col-sm-8">
                         <input type="date" class="form-control" th:field="*{datePromised}"/>
                     </div>
-
                 </div>
-                <div>
-                    <button type="submit">Add Loan</button>
-                    <button type="button" onclick="cancelForm()">Cancel</button>
+                <div class="form-group row">
+                    <div class="col-sm-4 text-center p-2">
+
+                    </div>
+                    <div class="col-sm-8 text-center p-2">
+                        <button class="btn btn-primary" type="submit" onclick="validateForm(event)">Add Loan</button>
+                        <button class="btn btn-primary" type="button" onclick="cancelForm()">Cancel</button>
+                    </div>
                 </div>
             </div>
         </form>
     </div>
-
 
 
     <div class="container-fluid text-center ">
