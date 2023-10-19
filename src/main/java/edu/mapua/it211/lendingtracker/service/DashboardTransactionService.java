@@ -23,7 +23,7 @@ public class DashboardTransactionService {
 
 
     public void saveDashboardTransactions(DashboardTransaction dashboardTransaction) {
-        dashboardTransaction.setTransactionId(mongoSequenceGenerator.generateSequence("dashboardtransactionsequence"));
+        dashboardTransaction.setTransactionId(mongoSequenceGenerator.generateSequence("dashboardtransactionid"));
         dashboardTransactionRepository.save(dashboardTransaction);
     }
 

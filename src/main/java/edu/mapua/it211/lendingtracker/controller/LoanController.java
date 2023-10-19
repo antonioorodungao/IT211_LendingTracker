@@ -24,7 +24,7 @@ public class LoanController {
     PaymentService paymentService;
 
     @GetMapping("/loan/view")
-    public String viewLoans(@RequestParam("borrowerId") String borrowerId, @RequestParam("loanId") Long loanId, Model model) {
+    public String viewLoans(@RequestParam("borrowerId") Long borrowerId, @RequestParam("loanId") Long loanId, Model model) {
         Loan loan = loanService.getLoan(loanId);
         model.addAttribute("loan", loan);
         Payment newPayment = new Payment();

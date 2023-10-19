@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class Borrower {
 
     @Id
-    private String borrowerId;
+    private long borrowerId;
     private String firstName;
     private String lastName;
     private String email;
@@ -33,10 +33,6 @@ public class Borrower {
         this.email = email;
         this.mobileNumber = mobileNumber;
         this.status="OPEN";
-        this.borrowerId = generateID();
     }
 
-    public String generateID(){
-        return registrationDate.getYear() + firstName.substring(0, 3) + lastName.substring(0,3);
-    }
 }

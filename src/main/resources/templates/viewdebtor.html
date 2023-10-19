@@ -24,7 +24,7 @@
         function validateForm(event) {
             var principal = parseFloat(document.getElementById('principal').value);
             var interestRate = parseFloat(document.getElementById('interestRate').value);
-            var datePromised = document.getElementById('datePromised').value;
+            var dateDue = document.getElementById('dateDue').value;
 
             if (isNaN(principal) || principal <= 0 || !principal) {
                 event.preventDefault();
@@ -32,7 +32,7 @@
             } else if (isNaN(interestRate) || interestRate <= 0 || !interestRate) {
                 event.preventDefault();
                 alert('Interest Rate should be a numeric value greater than 0.');
-            } else if (!datePromised) {
+            } else if (!dateDue) {
                 event.preventDefault();
                 alert('Date Promised should not be empty.');
             }
@@ -42,7 +42,7 @@
 <body>
 <nav class="navbar navbar-expand-sm bg-primary navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">Logo Here</a>
+        <a class="navbar-brand" href="#">Borrow Flow</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavBar">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -112,7 +112,7 @@
                 <div class="form-group row mb-2">
                     <label class="col-sm-4 col-form-label">Date Promised</label>
                     <div class="col-sm-8">
-                        <input type="date" class="form-control" th:field="*{datePromised}"/>
+                        <input type="date" class="form-control" th:field="*{dateDue}"/>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -131,31 +131,33 @@
 
     <div class="container-fluid text-center ">
         <div><h1>Loans</h1></div>
-        <div>
+        <div class="table-responsive-sm">
             <table class="table table-bordered">
                 <thead class="table-dark">
                 <tr>
-                    <th>Loan ID</th>
-                    <th>Borrower ID</th>
-                    <th>Principal</th>
-                    <th>Balance</th>
-                    <th>Interest Rate</th>
-                    <th>Borrowed Date</th>
-                    <th>Promised Date</th>
-                    <th>Operation</th>
+                    <th class="fs-6 fs-sm-3 fs-md-2">Loan ID</th>
+                    <th class="fs-6 fs-sm-3 fs-md-2">Borrower ID</th>
+                    <th class="fs-6 fs-sm-3 fs-md-2">Principal</th>
+                    <th class="fs-6 fs-sm-3 fs-md-2">Balance</th>
+                    <th class="fs-6 fs-sm-3 fs-md-2">Interest Rate</th>
+                    <th class="fs-6 fs-sm-3 fs-md-2">Borrowed Date</th>
+                    <th class="fs-6 fs-sm-3 fs-md-2">Due Date</th>
+                    <th class="fs-6 fs-sm-3 fs-md-2">Status</th>
+                    <th class="fs-6 fs-sm-3 fs-md-2">Operation</th>
                 </tr>
                 </thead>
                 <tbody>
                 <th:block th:each="loan : ${borrowerLoans}">
                     <tr>
-                        <td>[[${loan.loanId}]]</td>
-                        <td>[[${loan.borrowerId}]]</td>
-                        <td>[[${loan.principal}]]</td>
-                        <td>[[${loan.balance}]]</td>
-                        <td>[[${loan.interestRate}]]</td>
-                        <td>[[${loan.dateBorrowed}]]</td>
-                        <td>[[${loan.datePromised}]]</td>
-                        <td>
+                        <td class="fs-6 fs-sm-3 fs-md-2">[[${loan.loanId}]]</td>
+                        <td class="fs-6 fs-sm-3 fs-md-2">[[${loan.borrowerId}]]</td>
+                        <td class="fs-6 fs-sm-3 fs-md-2">[[${loan.principal}]]</td>
+                        <td class="fs-6 fs-sm-3 fs-md-2">[[${loan.balance}]]</td>
+                        <td class="fs-6 fs-sm-3 fs-md-2">[[${loan.interestRate}]]</td>
+                        <td class="fs-6 fs-sm-3 fs-md-2">[[${loan.dateBorrowed}]]</td>
+                        <td class="fs-6 fs-sm-3 fs-md-2">[[${loan.dateDue}]]</td>
+                        <td class="fs-6 fs-sm-3 fs-md-2">[[${loan.status}]]</td>
+                        <td class="fs-6 fs-sm-3 fs-md-2">
                             <a th:href="@{/loan/view(borrowerId=${loan.borrowerId}, loanId=${loan.loanId})}">View</a>
                         </td>
                     </tr>

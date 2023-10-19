@@ -1,5 +1,6 @@
 package edu.mapua.it211.lendingtracker.service;
 
+import edu.mapua.it211.lendingtracker.Utils;
 import edu.mapua.it211.lendingtracker.components.MongoSequenceGenerator;
 import edu.mapua.it211.lendingtracker.model.Loan;
 import edu.mapua.it211.lendingtracker.model.Payment;
@@ -23,7 +24,7 @@ public class LoanService {
     @Autowired
     private DashboardService dashboardService;
 
-    public List<Loan> getLoans(String id) {
+    public List<Loan> getLoans(Long id) {
         return loanRepository.findLoansByBorrowerId(id);
     }
 
@@ -33,6 +34,8 @@ public class LoanService {
 
     public void save(Loan loan) {
         loan.setLoanId(mongoSequenceGenerator.generateSequence("sequenceloanid"));
+        loan.setBalance(loan.getPrincipal());
+        loan.setStatus(Utils.LoanStatus.OPEN.toString());
         loan.setDateBorrowed(LocalDate.now());
         loanRepository.save(loan);
         dashboardService.registerLoan(loan);
@@ -41,11 +44,11 @@ public class LoanService {
     public void deleteLoan(Long id) {
         loanRepository.deleteById(id);
     }
-    public void reducePrincipal(Payment payment){
+    public void reduceBalance(Payment payment){
         if(!Objects.isNull( payment.getPrincipalPayment())) {
             Loan loan = loanRepository.findById(payment.getLoanId()).orElse(null);
             BigDecimal newBalance = loan.getPrincipal().subtract(payment.getPrincipalPayment());
-            loanRepository.updatePrincipal(loan.getLoanId(), newBalance);
+            loanRepository.updateBalance(loan.getLoanId(), newBalance);
         }
     }
 

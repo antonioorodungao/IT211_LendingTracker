@@ -52,7 +52,7 @@ Fund f = new Fund();
     public String withdrawFund(Fund fund, RedirectAttributes ra){
         dashboardService.withdrawAmountFromLoanableFund(fund.getAmount());
         DashboardTransaction dashboardTransaction = new DashboardTransaction();
-        dashboardTransaction.setAmount(fund.getAmount());
+        dashboardTransaction.setAmount(fund.getAmount().negate());
         dashboardTransaction.setOperation("Withdraw Fund");
         dashboardTransaction.setSource("Dashboard");
         dashboardTransactionService.saveDashboardTransactions(dashboardTransaction);

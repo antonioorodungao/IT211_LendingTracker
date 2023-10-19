@@ -4,7 +4,7 @@ import edu.mapua.it211.lendingtracker.model.Borrower;
 import edu.mapua.it211.lendingtracker.model.Loan;
 import edu.mapua.it211.lendingtracker.model.Payment;
 import edu.mapua.it211.lendingtracker.service.DashboardService;
-import edu.mapua.it211.lendingtracker.service.DebtorService;
+import edu.mapua.it211.lendingtracker.service.BorrowerService;
 import edu.mapua.it211.lendingtracker.service.LoanService;
 import edu.mapua.it211.lendingtracker.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ import java.time.LocalDate;
 public class LendingTrackerApplication implements CommandLineRunner {
 
     @Autowired
-    DebtorService debtorService;
+    BorrowerService borrowerService;
 
     @Autowired
     LoanService loanService;
@@ -40,7 +40,7 @@ public class LendingTrackerApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        debtorService.deleteAll();
+        borrowerService.deleteAll();
         loanService.deleteAll();
         dashboardService.deleteAll();
         dashboardService.initDashboard();
@@ -49,26 +49,24 @@ public class LendingTrackerApplication implements CommandLineRunner {
 
 
     void addBorrowerProfiles() {
-        debtorService.save(new Borrower("Antonio", "Dungao", "antoniodungao@yahoo.com", "09123456789"));
-        debtorService.save(new Borrower("John", "Doe", "johndoe@yahoo.com", "09123456789"));
-        debtorService.save(new Borrower("Jane", "Doe", "janedoe@yahoo.com", "09123456789"));
+        borrowerService.save(new Borrower("Antonio", "Dungao", "antoniodungao@yahoo.com", "09123456789"));
+        borrowerService.save(new Borrower("John", "Doe", "johndoe@yahoo.com", "09123456789"));
+        borrowerService.save(new Borrower("Jane", "Doe", "janedoe@yahoo.com", "09123456789"));
 
         Loan loan = new Loan();
         loan.setBalance(new BigDecimal(1000));
-        loan.setBorrowerId("2023AntDun");
         loan.setPrincipal(new BigDecimal(1000));
         loan.setBalance(new BigDecimal(1000));
-        loan.setDatePromised(LocalDate.now().plusDays(7));
+        loan.setDateDue(LocalDate.now().plusDays(7));
         loan.setDateBorrowed(LocalDate.now());
 
         loanService.save(loan);
 
         loan = new Loan();
         loan.setBalance(new BigDecimal(1000));
-        loan.setBorrowerId("2023JohDoe");
         loan.setPrincipal(new BigDecimal(1000));
         loan.setBalance(new BigDecimal(1000));
-        loan.setDatePromised(LocalDate.now().plusDays(7));
+        loan.setDateDue(LocalDate.now().plusDays(7));
         loan.setDateBorrowed(LocalDate.now());
         loanService.save(loan);
 

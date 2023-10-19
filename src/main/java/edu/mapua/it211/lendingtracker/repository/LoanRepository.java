@@ -10,11 +10,14 @@ import java.util.List;
 
 
 public interface LoanRepository extends MongoRepository<Loan, Long> {
-    @Query("{ 'borrowerId' : ?0 }")
-    List<Loan> findLoansByBorrowerId(String id);
 
+    //db.loan.find({'borrowerId': <param1>})
+    @Query("{ 'borrowerId' : ?0 }")
+    List<Loan> findLoansByBorrowerId(Long id);
+
+    //db.loan.update({'loanId': <param1>}, {$set: {'balance': <param2>}})
     @Query("{ 'loanId' : ?0 }")
-    @Update("{$set: {'principal': ?1}}")
-    void updatePrincipal(Long id, BigDecimal amount);
+    @Update("{$set: {'balance': ?1}}")
+    void updateBalance(Long id, BigDecimal amount);
 
 }

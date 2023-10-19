@@ -5,10 +5,10 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.mongodb.repository.Update;
 
-public interface DebtorRepository extends MongoRepository<Borrower, String>{
+public interface BorrowerRepository extends MongoRepository<Borrower, Long>{
 
     @Query("{ 'borrowerId' : ?0 }")
-    @Update("{$set: {'status' : 'Inactive' }}")
-    void setDebtorStatusClosed(String id);
+    @Update("{$set: {'status' : ?1 }}")
+    void setDebtorStatusClosed(Long id, String status);
 
 }

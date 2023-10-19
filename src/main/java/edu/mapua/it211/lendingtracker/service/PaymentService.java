@@ -30,7 +30,7 @@ public class PaymentService {
         paymentRepository.deleteById(id);
     }
 
-    public List<Payment> findLoanIdAndBorrowerId(Long loanId, String borrowerId){
+    public List<Payment> findLoanIdAndBorrowerId(Long loanId, Long borrowerId){
         return paymentRepository.findbyLoanIdAndBorrowerId(loanId, borrowerId);
     }
 
@@ -38,7 +38,7 @@ public class PaymentService {
         payment.setPaymentId(mongoSequenceGenerator.generateSequence("sequencepaymentid"));
         payment.setPaymentDate(LocalDate.now());
         paymentRepository.save(payment);
-        loanService.reducePrincipal(payment);
+        loanService.reduceBalance(payment);
         dashboardService.registerPayment(payment);
     }
 

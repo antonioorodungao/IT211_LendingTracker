@@ -3,7 +3,7 @@ package edu.mapua.it211.lendingtracker.controller;
 import edu.mapua.it211.lendingtracker.exceptions.DebtorNotFoundException;
 import edu.mapua.it211.lendingtracker.model.Borrower;
 import edu.mapua.it211.lendingtracker.model.Loan;
-import edu.mapua.it211.lendingtracker.service.DebtorService;
+import edu.mapua.it211.lendingtracker.service.BorrowerService;
 import edu.mapua.it211.lendingtracker.service.LoanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,7 +19,7 @@ import java.util.List;
 public class BorrowerController {
 
     @Autowired
-    private DebtorService debtorService;
+    private BorrowerService borrowerService;
 
     @Autowired
     private LoanService loanService;
@@ -33,24 +33,24 @@ public class BorrowerController {
 
     @PostMapping("/borrower/save")
     public String saveDebtor(Borrower borrower, RedirectAttributes ra) {
-        debtorService.save(borrower);
+        borrowerService.save(borrower);
         ra.addFlashAttribute("message", "The borrower has been added/updated.");
         return "redirect:/listdebtors";
     }
 
 
     @GetMapping("/borrower/deactivate")
-    public String deactivate(@RequestParam("id") String id, RedirectAttributes ra) {
-        debtorService.deleteDebtor(id);
+    public String deactivate(@RequestParam("id") Long id, RedirectAttributes ra) {
+        borrowerService.closeBorrower(id);
         ra.addFlashAttribute("message", "The debtor has been deactivated.");
         return "redirect:/listdebtors";
     }
 
 
     @GetMapping("/borrower/edit")
-    public String showEditForm(@RequestParam("id") String id, Model model, RedirectAttributes ra) {
+    public String showEditForm(@RequestParam("id") Long id, Model model, RedirectAttributes ra) {
         try {
-            Borrower borrower = debtorService.get(id);
+            Borrower borrower = borrowerService.get(id);
             model.addAttribute("borrower", borrower);
             model.addAttribute("pageTitle", "Edit Lender (ID: " + id + ")");
             return "editborrower";
@@ -61,9 +61,9 @@ public class BorrowerController {
     }
 
     @GetMapping("/borrower/view")
-    public String showDebtor(@RequestParam("id") String borrowerId, Model model, RedirectAttributes ra) {
+    public String showDebtor(@RequestParam("id") Long borrowerId, Model model, RedirectAttributes ra) {
         try {
-            Borrower borrower = debtorService.get(borrowerId);
+            Borrower borrower = borrowerService.get(borrowerId);
             List<Loan> debtorLoans= loanService.getLoans(borrowerId);
             model.addAttribute("borrower", borrower);
             model.addAttribute("borrowerLoans", debtorLoans);
@@ -84,7 +84,7 @@ public class BorrowerController {
     public String listLenders(Model model) {
         System.out.println("Debtor list");
         model.addAttribute("borrower", new Borrower());
-        model.addAttribute("debtorlist", debtorService.listDebtors());
+        model.addAttribute("debtorlist", borrowerService.listDebtors());
         return "listdebtors";
     }
 }

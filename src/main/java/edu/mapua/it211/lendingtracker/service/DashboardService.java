@@ -82,7 +82,7 @@ public class DashboardService {
         dashboardTransaction.setOperation("New Loan");
         dashboardTransaction.setSource("Loan");
         dashboardTransaction.setSourceId(loan.getLoanId());
-        dashboardTransaction.setAmount(loan.getPrincipal());
+        dashboardTransaction.setAmount( loan.getPrincipal().negate());
         dashboardTransactionService.saveDashboardTransactions(dashboardTransaction);
         subtractAmountFromLoanableFund(loan.getPrincipal());
     }

@@ -9,7 +9,7 @@ import java.util.List;
 public interface PaymentRepository extends MongoRepository<Payment, Long> {
 
     @Query("{ 'loanId' : ?0, 'borrowerId' : ?1 }")
-    List<Payment> findbyLoanIdAndBorrowerId(Long loanId, String borrowerId);
+    List<Payment> findbyLoanIdAndBorrowerId(Long loanId, Long borrowerId);
 
     @Query("{ 'loanId' : ?0 }")
     Payment findByLoanId(Long loanId);

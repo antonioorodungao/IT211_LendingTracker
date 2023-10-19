@@ -13,12 +13,12 @@ public class Loan {
 
     @Id
     private Long loanId;
-    private String borrowerId;
+    private Long borrowerId;
     private BigDecimal principal;
     private BigDecimal balance;
     private BigDecimal accruedInterest;
     private BigDecimal interestRate;
     private LocalDate dateBorrowed;
-    private LocalDate datePromised;
+    private LocalDate dateDue;
     private String status;
 }

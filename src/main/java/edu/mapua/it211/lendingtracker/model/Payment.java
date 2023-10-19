@@ -12,7 +12,7 @@ import java.time.LocalDate;
 public class Payment {
     @Id
     private Long paymentId;
-    private String borrowerId;
+    private Long borrowerId;
     private Long loanId;
     private BigDecimal interestPayment;
     private BigDecimal principalPayment;
