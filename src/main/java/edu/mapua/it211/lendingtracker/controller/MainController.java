@@ -1,5 +1,6 @@
 package edu.mapua.it211.lendingtracker.controller;
 
+import edu.mapua.it211.lendingtracker.exceptions.NotEnoughLoanableAmount;
 import edu.mapua.it211.lendingtracker.model.Dashboard;
 import edu.mapua.it211.lendingtracker.model.DashboardTransaction;
 import edu.mapua.it211.lendingtracker.model.Fund;
@@ -25,11 +26,11 @@ public class MainController {
 
 
     @GetMapping("/home")
-    public String showHomePage(Model model){
+    public String showHomePage(Model model) {
         System.out.println("Redirecting to home.");
         Dashboard ds = dashboardService.getDashboard();
         List<DashboardTransaction> transactions = dashboardTransactionService.showLastTwentyTransactions();
-Fund f = new Fund();
+        Fund f = new Fund();
         model.addAttribute("dashboard", ds);
         model.addAttribute("transactions", transactions);
         model.addAttribute("fund", f);
@@ -37,26 +38,23 @@ Fund f = new Fund();
     }
 
     @PostMapping("/dashboard/addFund")
-    public String addFund(Fund fund, RedirectAttributes ra){
+    public String addFund(Fund fund, RedirectAttributes ra) {
         dashboardService.addAmountToLoanableFund(fund.getAmount());
-        DashboardTransaction dashboardTransaction = new DashboardTransaction();
-        dashboardTransaction.setAmount(fund.getAmount());
-        dashboardTransaction.setOperation("Add Fund");
-        dashboardTransaction.setSource("Dashboard");
-        dashboardTransactionService.saveDashboardTransactions(dashboardTransaction);
+        dashboardTransactionService.addFund(fund.getAmount());
         ra.addFlashAttribute("message", "The fund has been added.");
         return "redirect:/home";
     }
 
     @PostMapping("/dashboard/withdrawFund")
-    public String withdrawFund(Fund fund, RedirectAttributes ra){
-        dashboardService.withdrawAmountFromLoanableFund(fund.getAmount());
-        DashboardTransaction dashboardTransaction = new DashboardTransaction();
-        dashboardTransaction.setAmount(fund.getAmount().negate());
-        dashboardTransaction.setOperation("Withdraw Fund");
-        dashboardTransaction.setSource("Dashboard");
-        dashboardTransactionService.saveDashboardTransactions(dashboardTransaction);
-        ra.addFlashAttribute("message", "The fund has been withdrawn.");
+    public String withdrawFund(Fund fund, RedirectAttributes ra) {
+        try {
+            dashboardService.withdrawAmountFromLoanableFund(fund.getAmount());
+            dashboardTransactionService.withdrawFund(fund.getAmount());
+            ra.addFlashAttribute("message", "The fund has been withdrawn.");
+        } catch (NotEnoughLoanableAmount e) {
+            ra.addFlashAttribute("error", e.toString());
+        }
+
         return "redirect:/home";
     }
 }

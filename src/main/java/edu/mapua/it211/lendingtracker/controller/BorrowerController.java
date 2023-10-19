@@ -1,6 +1,6 @@
 package edu.mapua.it211.lendingtracker.controller;
 
-import edu.mapua.it211.lendingtracker.exceptions.DebtorNotFoundException;
+import edu.mapua.it211.lendingtracker.exceptions.BorrowerNotFoundException;
 import edu.mapua.it211.lendingtracker.model.Borrower;
 import edu.mapua.it211.lendingtracker.model.Loan;
 import edu.mapua.it211.lendingtracker.service.BorrowerService;
@@ -54,7 +54,7 @@ public class BorrowerController {
             model.addAttribute("borrower", borrower);
             model.addAttribute("pageTitle", "Edit Lender (ID: " + id + ")");
             return "editborrower";
-        } catch (DebtorNotFoundException e) {
+        } catch (BorrowerNotFoundException e) {
             ra.addFlashAttribute("message", e.getMessage());
             return "redirect:/listdebtor";
         }
@@ -73,7 +73,7 @@ public class BorrowerController {
             loan.setBorrowerId(borrowerId);
             model.addAttribute("newLoan", loan);
             return "viewdebtor";
-        } catch (DebtorNotFoundException e) {
+        } catch (BorrowerNotFoundException e) {
             ra.addFlashAttribute("message", e.getMessage());
             return "redirect:/listdebtors";
         }

@@ -1,5 +1,6 @@
 package edu.mapua.it211.lendingtracker.controller;
 
+import edu.mapua.it211.lendingtracker.exceptions.NotEnoughLoanableAmount;
 import edu.mapua.it211.lendingtracker.model.Loan;
 import edu.mapua.it211.lendingtracker.model.Payment;
 import edu.mapua.it211.lendingtracker.service.LoanService;
@@ -40,9 +41,13 @@ public class LoanController {
 
     @PostMapping("/loan/add")
     public String addLoan(Loan loan, RedirectAttributes ra) {
-        loanService.save(loan);
         ra.addAttribute("id", loan.getBorrowerId());
-        ra.addFlashAttribute("message", "The loan has been added.");
+        try {
+            loanService.save(loan);
+            ra.addFlashAttribute("message", "The loan has been added.");
+        } catch (NotEnoughLoanableAmount e) {
+            ra.addFlashAttribute("error", e.toString());
+        }
         return "redirect:/borrower/view";
     }
 }

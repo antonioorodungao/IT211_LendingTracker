@@ -27,6 +27,22 @@ public class DashboardTransactionService {
         dashboardTransactionRepository.save(dashboardTransaction);
     }
 
+    public void addFund(BigDecimal amount){
+        DashboardTransaction dashboardTransaction = new DashboardTransaction();
+        dashboardTransaction.setAmount(amount);
+        dashboardTransaction.setOperation("Add Fund");
+        dashboardTransaction.setSource("Dashboard");
+        saveDashboardTransactions(dashboardTransaction);
+    }
+
+    public void withdrawFund(BigDecimal amount){
+        DashboardTransaction dashboardTransaction = new DashboardTransaction();
+        dashboardTransaction.setAmount(amount.negate());
+        dashboardTransaction.setOperation("Withdraw Fund");
+        dashboardTransaction.setSource("Dashboard");
+        saveDashboardTransactions(dashboardTransaction);
+    }
+
     public void deleteAll(){
         dashboardTransactionRepository.deleteAll();
     }

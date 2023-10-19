@@ -2,6 +2,7 @@ package edu.mapua.it211.lendingtracker.service;
 
 import edu.mapua.it211.lendingtracker.Utils;
 import edu.mapua.it211.lendingtracker.components.MongoSequenceGenerator;
+import edu.mapua.it211.lendingtracker.exceptions.NotEnoughLoanableAmount;
 import edu.mapua.it211.lendingtracker.model.Loan;
 import edu.mapua.it211.lendingtracker.model.Payment;
 import edu.mapua.it211.lendingtracker.repository.LoanRepository;
@@ -32,13 +33,14 @@ public class LoanService {
         return loanRepository.findById(id).orElse(null);
     }
 
-    public void save(Loan loan) {
+    public void save(Loan loan) throws NotEnoughLoanableAmount {
+        dashboardService.registerLoan(loan);
         loan.setLoanId(mongoSequenceGenerator.generateSequence("sequenceloanid"));
         loan.setBalance(loan.getPrincipal());
         loan.setStatus(Utils.LoanStatus.OPEN.toString());
         loan.setDateBorrowed(LocalDate.now());
         loanRepository.save(loan);
-        dashboardService.registerLoan(loan);
+
     }
 
     public void deleteLoan(Long id) {

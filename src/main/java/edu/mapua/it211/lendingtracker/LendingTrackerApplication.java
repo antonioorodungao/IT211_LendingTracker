@@ -1,5 +1,6 @@
 package edu.mapua.it211.lendingtracker;
 
+import edu.mapua.it211.lendingtracker.exceptions.NotEnoughLoanableAmount;
 import edu.mapua.it211.lendingtracker.model.Borrower;
 import edu.mapua.it211.lendingtracker.model.Loan;
 import edu.mapua.it211.lendingtracker.model.Payment;
@@ -47,8 +48,7 @@ public class LendingTrackerApplication implements CommandLineRunner {
         addBorrowerProfiles();
     }
 
-
-    void addBorrowerProfiles() {
+    void addBorrowerProfiles() throws NotEnoughLoanableAmount {
         borrowerService.save(new Borrower("Antonio", "Dungao", "antoniodungao@yahoo.com", "09123456789"));
         borrowerService.save(new Borrower("John", "Doe", "johndoe@yahoo.com", "09123456789"));
         borrowerService.save(new Borrower("Jane", "Doe", "janedoe@yahoo.com", "09123456789"));

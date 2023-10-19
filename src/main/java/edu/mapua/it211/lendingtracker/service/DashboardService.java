@@ -1,5 +1,6 @@
 package edu.mapua.it211.lendingtracker.service;
 
+import edu.mapua.it211.lendingtracker.exceptions.NotEnoughLoanableAmount;
 import edu.mapua.it211.lendingtracker.model.Dashboard;
 import edu.mapua.it211.lendingtracker.model.DashboardTransaction;
 import edu.mapua.it211.lendingtracker.model.Loan;
@@ -21,7 +22,7 @@ public class DashboardService {
     @Autowired
     DashboardTransactionService dashboardTransactionService;
 
-    public void initDashboard(){
+    public void initDashboard() {
         Dashboard dashboard = new Dashboard();
         dashboard.setLoanableFund(new BigDecimal(5000));
         dashboard.setTotalRevenue(BigDecimal.ZERO);
@@ -30,11 +31,11 @@ public class DashboardService {
         dashboardRepository.save(dashboard);
     }
 
-    public Dashboard getDashboard(){
+    public Dashboard getDashboard() {
         return dashboardRepository.find(1L);
     }
 
-    public void deleteAll(){
+    public void deleteAll() {
         dashboardRepository.deleteAll();
         dashboardTransactionService.deleteAll();
     }
@@ -44,19 +45,21 @@ public class DashboardService {
         dashboardRepository.updateLoanableFund(d.getLoanableFund().add(additionalAmount));
     }
 
-    public void subtractAmountFromLoanableFund(BigDecimal additionalAmount) {
-        Dashboard d = dashboardRepository.find(1L);
-        dashboardRepository.updateLoanableFund(d.getLoanableFund().subtract(additionalAmount));
+    public void subtractAmountFromLoanableFund(BigDecimal additionalAmount) throws NotEnoughLoanableAmount {
+        withdrawAmountFromLoanableFund(additionalAmount);
     }
 
-    public void withdrawAmountFromLoanableFund(BigDecimal additionalAmount) {
+    public void withdrawAmountFromLoanableFund(BigDecimal additionalAmount) throws NotEnoughLoanableAmount {
         Dashboard d = dashboardRepository.find(1L);
+        if(d.getLoanableFund().subtract(additionalAmount).compareTo(BigDecimal.ZERO) < 0){
+            throw new NotEnoughLoanableAmount();
+        }
         dashboardRepository.updateLoanableFund(d.getLoanableFund().subtract(additionalAmount));
     }
 
     public void registerPayment(@NotNull Payment payment) {
 
-        if(!Objects.isNull(payment.getInterestPayment()) && !payment.getInterestPayment().equals(BigDecimal.ZERO)){
+        if (!Objects.isNull(payment.getInterestPayment()) && !payment.getInterestPayment().equals(BigDecimal.ZERO)) {
             DashboardTransaction dashboardTransaction = new DashboardTransaction();
             dashboardTransaction.setOperation("Interest Payment");
             dashboardTransaction.setSource("Payment");
@@ -66,7 +69,7 @@ public class DashboardService {
             addAmountToLoanableFund(payment.getInterestPayment());
         }
 
-        if(!Objects.isNull(payment.getPrincipalPayment()) &&!payment.getPrincipalPayment().equals(BigDecimal.ZERO)){
+        if (!Objects.isNull(payment.getPrincipalPayment()) && !payment.getPrincipalPayment().equals(BigDecimal.ZERO)) {
             DashboardTransaction dashboardTransaction = new DashboardTransaction();
             dashboardTransaction.setOperation("Principal Payment");
             dashboardTransaction.setSource("Payment");
@@ -77,13 +80,14 @@ public class DashboardService {
         }
     }
 
-    public void registerLoan(Loan loan) {
+    public void registerLoan(Loan loan) throws NotEnoughLoanableAmount {
+        subtractAmountFromLoanableFund(loan.getPrincipal());
         DashboardTransaction dashboardTransaction = new DashboardTransaction();
         dashboardTransaction.setOperation("New Loan");
         dashboardTransaction.setSource("Loan");
         dashboardTransaction.setSourceId(loan.getLoanId());
-        dashboardTransaction.setAmount( loan.getPrincipal().negate());
+        dashboardTransaction.setAmount(loan.getPrincipal().negate());
         dashboardTransactionService.saveDashboardTransactions(dashboardTransaction);
-        subtractAmountFromLoanableFund(loan.getPrincipal());
+
     }
 }
