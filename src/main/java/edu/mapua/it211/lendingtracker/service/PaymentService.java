@@ -1,6 +1,7 @@
 package edu.mapua.it211.lendingtracker.service;
 
 import edu.mapua.it211.lendingtracker.components.MongoSequenceGenerator;
+import edu.mapua.it211.lendingtracker.exceptions.NotEnoughLoanableAmount;
 import edu.mapua.it211.lendingtracker.model.Payment;
 import edu.mapua.it211.lendingtracker.repository.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,8 @@ public class PaymentService {
         paymentRepository.deleteAll();
     }
 
-    public void deletePayment(Long id){
+    public void deletePayment(Long id) throws NotEnoughLoanableAmount {
+        dashboardService.revertPayment(id);
         paymentRepository.deleteById(id);
     }
 

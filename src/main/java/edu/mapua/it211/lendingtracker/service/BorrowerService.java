@@ -24,10 +24,10 @@ public class BorrowerService {
         return borrowerRepository.findAll();
     }
 
-    public void save(Borrower borrower){
+    public Borrower save(Borrower borrower){
         borrower.setBorrowerId(mongoSequenceGenerator.generateSequence("sequenceborrowerid"));
         borrower.setStatus(Utils.BorrowerStatus.OPEN.name());
-        borrowerRepository.save(borrower);
+        return borrowerRepository.save(borrower);
     }
 
     public void deleteAll(){

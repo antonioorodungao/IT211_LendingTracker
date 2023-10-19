@@ -109,8 +109,8 @@
             <form th:action="@{/payment/add}" method="post" th:object="${newPayment}"
                   style="max-width: 500px; margin:0 auto;">
                 <div class="border border-secondary rounded p-2">
-                    <input type="hidden" th:field="*{borrowerId}"/>
-                    <input type="hidden" th:field="*{loanId}"/>
+                    <input type="hidden" th:field="${newPayment.borrowerId}"/>
+                    <input type="hidden" th:field="${newPayment.loanId}"/>
                     <div class="form-group row mb-2">
                         <label class="col-sm-4 col-form-label">Interest Payment</label>
                         <div class="col-sm-8"><input class="form-control" type="text" th:field="*{interestPayment}"></div>
@@ -141,6 +141,7 @@
                 <td>Payment Date</td>
                 <td>Principal Payment</td>
                 <td>Interest Payment</td>
+                <td>Operation</td>
             </tr>
             </thead>
             <tbody>
@@ -150,6 +151,7 @@
                     <td>[[${payment.paymentDate}]]</td>
                     <td>[[${payment.principalPayment}]]</td>
                     <td>[[${payment.interestPayment}]]</td>
+                    <td><a th:href="@{/payment/delete(paymentId = ${payment.paymentId}, borrowerId=${newPayment.borrowerId}, loanId=${newPayment.loanId})}">Delete Payment</a> </td>
                 </tr>
             </th:block>
             </tbody>
