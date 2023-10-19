@@ -8,9 +8,11 @@ import java.util.List;
 
 public interface PaymentRepository extends MongoRepository<Payment, Long> {
 
+    //db.payment.find({'loanId': <param1>, 'borrowerId': <param2>})
     @Query("{ 'loanId' : ?0, 'borrowerId' : ?1 }")
     List<Payment> findbyLoanIdAndBorrowerId(Long loanId, Long borrowerId);
 
+    //db.payment.find({'loanId': <param1>})
     @Query("{ 'loanId' : ?0 }")
     Payment findByLoanId(Long loanId);
 }

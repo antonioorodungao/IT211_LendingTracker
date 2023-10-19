@@ -1,5 +1,6 @@
 package edu.mapua.it211.lendingtracker.service;
 
+import edu.mapua.it211.lendingtracker.Utils;
 import edu.mapua.it211.lendingtracker.components.MongoSequenceGenerator;
 import edu.mapua.it211.lendingtracker.model.DashboardTransaction;
 import edu.mapua.it211.lendingtracker.model.Payment;
@@ -31,7 +32,7 @@ public class DashboardTransactionService {
         DashboardTransaction dashboardTransaction = new DashboardTransaction();
         dashboardTransaction.setAmount(amount);
         dashboardTransaction.setOperation("Add Fund");
-        dashboardTransaction.setSource("Dashboard");
+        dashboardTransaction.setSource(Utils.Sources.DASHBOARD.name());
         saveDashboardTransactions(dashboardTransaction);
     }
 
@@ -39,7 +40,7 @@ public class DashboardTransactionService {
         DashboardTransaction dashboardTransaction = new DashboardTransaction();
         dashboardTransaction.setAmount(amount.negate());
         dashboardTransaction.setOperation("Withdraw Fund");
-        dashboardTransaction.setSource("Dashboard");
+        dashboardTransaction.setSource(Utils.Sources.DASHBOARD.name());
         saveDashboardTransactions(dashboardTransaction);
     }
 
@@ -49,5 +50,13 @@ public class DashboardTransactionService {
 
     public List<DashboardTransaction> showLastTwentyTransactions(){
         return dashboardTransactionRepository.findTop20ByOrderByTransactionIdDesc();
+    }
+
+    public DashboardTransaction getDashboardTransaction(String source, Long id) {
+        return dashboardTransactionRepository.findBySourceAndTransactionId(source, id);
+    }
+
+    public void deleteDashboardTransaction(Long id) {
+        dashboardTransactionRepository.deleteById(id);
     }
 }

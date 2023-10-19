@@ -6,5 +6,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.Optional;
 
 public interface MongoSequenceRepository extends MongoRepository<Sequence, String> {
+    //db.sequence.findOne({id: 'loan'})
     Optional<Sequence> findById(String id);
 }

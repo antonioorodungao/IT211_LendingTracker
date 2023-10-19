@@ -9,4 +9,8 @@ public class Utils {
     public enum LoanStatus {
         OPEN, CLOSED
     }
+
+    public enum Sources {
+        LOAN, PAYMENT, DASHBOARD
+    }
 }
