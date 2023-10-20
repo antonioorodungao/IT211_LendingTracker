@@ -165,6 +165,7 @@
                         <td class="fs-6 fs-sm-3 fs-md-2">[[${loan.status}]]</td>
                         <td class="fs-6 fs-sm-3 fs-md-2">
                             <a th:href="@{/loan/view(borrowerId=${loan.borrowerId}, loanId=${loan.loanId})}">View</a>
+                            <a th:href="@{/loan/close(borrowerId=${loan.borrowerId}, loanId=${loan.loanId})}">Close</a>
                         </td>
                     </tr>
                 </th:block>

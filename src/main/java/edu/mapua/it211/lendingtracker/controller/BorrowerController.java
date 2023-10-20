@@ -40,7 +40,7 @@ public class BorrowerController {
 
 
     @GetMapping("/borrower/deactivate")
-    public String deactivate(@RequestParam("id") Long id, RedirectAttributes ra) {
+    public String deactivate(@RequestParam("borrowerId") Long id, RedirectAttributes ra) {
         borrowerService.closeBorrower(id);
         ra.addFlashAttribute("message", "The debtor has been deactivated.");
         return "redirect:/listdebtors";
@@ -48,7 +48,7 @@ public class BorrowerController {
 
 
     @GetMapping("/borrower/edit")
-    public String showEditForm(@RequestParam("id") Long id, Model model, RedirectAttributes ra) {
+    public String showEditForm(@RequestParam("borrowerId") Long id, Model model, RedirectAttributes ra) {
         try {
             Borrower borrower = borrowerService.get(id);
             model.addAttribute("borrower", borrower);
@@ -61,7 +61,7 @@ public class BorrowerController {
     }
 
     @GetMapping("/borrower/view")
-    public String showDebtor(@RequestParam("id") Long borrowerId, Model model, RedirectAttributes ra) {
+    public String showDebtor(@RequestParam("borrowerId") Long borrowerId, Model model, RedirectAttributes ra) {
         try {
             Borrower borrower = borrowerService.get(borrowerId);
             List<Loan> debtorLoans= loanService.getLoans(borrowerId);

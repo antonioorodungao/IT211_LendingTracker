@@ -112,9 +112,9 @@
                     <td>[[${borrower.email}]]</td>
                     <td>[[${borrower.mobileNumber}]]</td>
                     <td>[[${borrower.status}]]</td>
-                    <td><a th:href="@{/borrower/view(id=${borrower.borrowerId})}">View</a>
-                        <a th:href="@{/borrower/edit(id=${borrower.borrowerId}) }">Edit</a>
-                        <a th:href="@{/borrower/deactivate(id=${borrower.borrowerId})}">Deactivate</a></td>
+                    <td><a th:href="@{/borrower/view(borrowerId=${borrower.borrowerId})}">View</a>
+                        <a th:href="@{/borrower/edit(borrowerId=${borrower.borrowerId}) }">Edit</a>
+                        <a th:href="@{/borrower/deactivate(borrowerId=${borrower.borrowerId})}">Deactivate</a></td>
                 </tr>
             </th:block>
             </tbody>
