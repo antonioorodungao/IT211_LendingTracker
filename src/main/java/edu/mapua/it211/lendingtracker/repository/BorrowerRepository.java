@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.repository.Update;
 
 public interface BorrowerRepository extends MongoRepository<Borrower, Long>{
 
+    //db.borrowers.update({borrowerId: <?0>}, {$set: {status: <?1>}})
     @Query("{ 'borrowerId' : ?0 }")
     @Update("{$set: {'status' : ?1 }}")
     void setDebtorStatusClosed(Long id, String status);

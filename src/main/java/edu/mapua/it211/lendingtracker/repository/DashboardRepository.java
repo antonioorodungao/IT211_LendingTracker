@@ -9,11 +9,12 @@ import java.math.BigDecimal;
 
 public interface DashboardRepository extends MongoRepository<Dashboard, Long> {
 
-
+    //db.dashboard.update({dashboardId: 1}, {$set: {loanableFund: 5000}})
     @Query("{}")
     @Update("{$set: { 'loanableFund' : ?0 }}")
     void updateLoanableFund(BigDecimal additionalAmount);
 
+    //db.dashboard.findOne({dashboardId: 1})
     @Query("{dashboardId: ?0}")
     Dashboard find(Long dashboardId);
 }

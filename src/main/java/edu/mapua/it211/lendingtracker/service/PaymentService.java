@@ -43,5 +43,4 @@ public class PaymentService {
         loanService.reduceBalance(payment);
         dashboardService.registerPayment(payment);
     }
-
 }
