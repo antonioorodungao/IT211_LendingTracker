@@ -40,7 +40,7 @@ public class PaymentService {
         payment.setPaymentId(mongoSequenceGenerator.generateSequence("sequencepaymentid"));
         payment.setPaymentDate(LocalDate.now());
         paymentRepository.save(payment);
-        loanService.reduceBalance(payment);
+        loanService.reduceLoanBalance(payment);
         dashboardService.registerPayment(payment);
     }
 }

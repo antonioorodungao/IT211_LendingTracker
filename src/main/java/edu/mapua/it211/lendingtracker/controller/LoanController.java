@@ -1,5 +1,6 @@
 package edu.mapua.it211.lendingtracker.controller;
 
+import edu.mapua.it211.lendingtracker.exceptions.BalanceIsNotZeroException;
 import edu.mapua.it211.lendingtracker.exceptions.NotEnoughLoanableAmount;
 import edu.mapua.it211.lendingtracker.model.Loan;
 import edu.mapua.it211.lendingtracker.model.Payment;
@@ -47,6 +48,20 @@ public class LoanController {
             ra.addFlashAttribute("message", "The loan has been added.");
         } catch (NotEnoughLoanableAmount e) {
             ra.addFlashAttribute("error", e.toString());
+        }
+        return "redirect:/borrower/view";
+    }
+
+    @GetMapping("/loan/close")
+    public String closeLoan(@RequestParam("loanId") Long loanId, @RequestParam("borrowerId") Long borrowerId, RedirectAttributes ra) {
+        Loan loan = loanService.getLoan(loanId);
+        ra.addAttribute("loanId", loanId);
+        ra.addAttribute("borrowerId", borrowerId);
+        try {
+            loanService.closeLoan(loanId);
+            ra.addFlashAttribute("message", "The loan has been closed.");
+        } catch (BalanceIsNotZeroException e) {
+            ra.addFlashAttribute("error", "Unable to close the loan account. Balance is not zero.");
         }
         return "redirect:/borrower/view";
     }

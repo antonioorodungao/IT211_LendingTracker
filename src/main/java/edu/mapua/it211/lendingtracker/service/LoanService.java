@@ -1,7 +1,7 @@
 package edu.mapua.it211.lendingtracker.service;
 
-import edu.mapua.it211.lendingtracker.Utils;
 import edu.mapua.it211.lendingtracker.components.MongoSequenceGenerator;
+import edu.mapua.it211.lendingtracker.exceptions.BalanceIsNotZeroException;
 import edu.mapua.it211.lendingtracker.exceptions.NotEnoughLoanableAmount;
 import edu.mapua.it211.lendingtracker.model.Loan;
 import edu.mapua.it211.lendingtracker.model.Payment;
@@ -13,6 +13,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
+
+import static edu.mapua.it211.lendingtracker.Utils.LoanStatus.*;
 
 @Service
 public class LoanService {
@@ -37,21 +39,28 @@ public class LoanService {
         dashboardService.registerLoan(loan);
         loan.setLoanId(mongoSequenceGenerator.generateSequence("sequenceloanid"));
         loan.setBalance(loan.getPrincipal());
-        loan.setStatus(Utils.LoanStatus.OPEN.toString());
+        loan.setStatus(OPEN.toString());
         loan.setDateBorrowed(LocalDate.now());
         return loanRepository.save(loan);
     }
 
-    public void deleteLoan(Long id) {
-        loanRepository.deleteById(id);
+    public Boolean closeLoan(Long id) throws BalanceIsNotZeroException {
+        Loan loan = loanRepository.findLoanByLoanId(id);
+        if(loan.getBalance().compareTo(BigDecimal.ZERO) == 0) {
+            loanRepository.setLoanStatusClosed(id, CLOSED.name());
+            return true;
+        }else{
+            throw new BalanceIsNotZeroException();
+        }
     }
-    public void reduceBalance(Payment payment){
+    public void reduceLoanBalance(Payment payment){
         if(!Objects.isNull( payment.getPrincipalPayment())) {
             Loan loan = loanRepository.findById(payment.getLoanId()).orElse(null);
             BigDecimal newBalance = loan.getPrincipal().subtract(payment.getPrincipalPayment());
             loanRepository.updateBalance(loan.getLoanId(), newBalance);
         }
     }
+
 
     public void deleteAll() {
         loanRepository.deleteAll();

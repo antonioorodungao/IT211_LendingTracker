@@ -20,4 +20,13 @@ public interface LoanRepository extends MongoRepository<Loan, Long> {
     @Update("{$set: {'balance': ?1}}")
     void updateBalance(Long id, BigDecimal amount);
 
+    //db.loan.update({'loanId': <param1>}, {$set: {'status': <param2>}})
+    @Query("{ 'loanId' : ?0 }")
+    @Update("{$set: {'status': ?1}}")
+    void setLoanStatusClosed(Long id, String string);
+
+    //db.loan.find({'loanId': <param1>})
+    @Query("{ 'loanId' : ?0 }")
+    Loan findLoanByLoanId(Long id);
+
 }
