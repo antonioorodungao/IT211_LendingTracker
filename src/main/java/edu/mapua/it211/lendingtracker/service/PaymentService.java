@@ -42,6 +42,7 @@ public class PaymentService {
         payment.setPaymentDate(LocalDate.now());
         paymentRepository.save(payment);
         loanService.reduceLoanBalance(payment);
-
+        loanService.addToEarnedInterest(payment);
+        loanService.updateAccruedInterest(payment.getLoanId());
     }
 }

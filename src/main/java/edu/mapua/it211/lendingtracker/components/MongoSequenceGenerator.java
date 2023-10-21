@@ -28,4 +28,11 @@ public class MongoSequenceGenerator {
         return sequence.getSeq();
     }
 
+    //reset all sequence in the collection
+    public void resetAllSequence(){
+        Query query = new Query();
+        Update update = Update.update("seq", 0);
+        mongoOperations.updateMulti(query, update, "sequence");
+    };
+
 }
