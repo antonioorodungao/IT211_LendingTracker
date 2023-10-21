@@ -37,10 +37,11 @@ public class PaymentService {
     }
 
     public void save(Payment payment){
+        dashboardService.registerPayment(payment);
         payment.setPaymentId(mongoSequenceGenerator.generateSequence("sequencepaymentid"));
         payment.setPaymentDate(LocalDate.now());
         paymentRepository.save(payment);
         loanService.reduceLoanBalance(payment);
-        dashboardService.registerPayment(payment);
+
     }
 }
