@@ -11,6 +11,6 @@ public class Utils {
     }
 
     public enum Sources {
-        LOAN, PAYMENT, DASHBOARD
+        LOAN, PAYMENT_PRI, DASHBOARD, PAYMENT_INT
     }
 }

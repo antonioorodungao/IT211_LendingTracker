@@ -35,12 +35,12 @@ public class LoanService {
         return loanRepository.findById(id).orElse(null);
     }
 
-    public Loan save(Loan loan) throws NotEnoughLoanableAmount {
-        dashboardService.registerLoan(loan);
+    public Loan newLoan(Loan loan) throws NotEnoughLoanableAmount {
         loan.setLoanId(mongoSequenceGenerator.generateSequence("sequenceloanid"));
         loan.setBalance(loan.getPrincipal());
         loan.setStatus(OPEN.toString());
         loan.setDateBorrowed(LocalDate.now());
+        dashboardService.registerLoan(loan);
         return loanRepository.save(loan);
     }
 

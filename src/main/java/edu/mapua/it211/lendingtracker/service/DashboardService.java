@@ -7,9 +7,11 @@ import edu.mapua.it211.lendingtracker.model.DashboardTransaction;
 import edu.mapua.it211.lendingtracker.model.Loan;
 import edu.mapua.it211.lendingtracker.model.Payment;
 import edu.mapua.it211.lendingtracker.repository.DashboardRepository;
+import jakarta.annotation.PostConstruct;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -24,14 +26,14 @@ public class DashboardService {
 
     @Autowired
     DashboardTransactionService dashboardTransactionService;
-
+    
     public void initDashboard() {
         Dashboard dashboard = new Dashboard();
         dashboard.setLoanableFund(new BigDecimal(5000));
         dashboard.setTotalRevenue(BigDecimal.ZERO);
         dashboard.setTotalInterest(BigDecimal.ZERO);
         dashboard.setDashboardId(1L);
-        dashboardRepository.save(dashboard);
+        Dashboard d = dashboardRepository.save(dashboard);
     }
 
     public Dashboard getDashboard() {
@@ -60,22 +62,27 @@ public class DashboardService {
         dashboardRepository.updateLoanableFund(d.getLoanableFund().subtract(additionalAmount));
     }
 
-    public void registerPayment(@NotNull Payment payment) {
+    public void addAmountToTotalRevenue(BigDecimal additionalAmount) {
+        Dashboard d = dashboardRepository.find(1L);
+        dashboardRepository.updateTotalRevenue(d.getTotalRevenue().add(additionalAmount));
+    }
 
+    public void registerPayment(@NotNull Payment payment) {
         if (!Objects.isNull(payment.getInterestPayment()) && !payment.getInterestPayment().equals(BigDecimal.ZERO)) {
             DashboardTransaction dashboardTransaction = new DashboardTransaction();
             dashboardTransaction.setOperation("Interest Payment");
-            dashboardTransaction.setSource(PAYMENT.name());
+            dashboardTransaction.setSource(PAYMENT_INT.name());
             dashboardTransaction.setSourceId(payment.getPaymentId());
             dashboardTransaction.setAmount(payment.getInterestPayment());
             dashboardTransactionService.saveDashboardTransactions(dashboardTransaction);
             addAmountToLoanableFund(payment.getInterestPayment());
+            addAmountToTotalRevenue(payment.getInterestPayment());
         }
 
         if (!Objects.isNull(payment.getPrincipalPayment()) && !payment.getPrincipalPayment().equals(BigDecimal.ZERO)) {
             DashboardTransaction dashboardTransaction = new DashboardTransaction();
             dashboardTransaction.setOperation("Principal Payment");
-            dashboardTransaction.setSource(PAYMENT.name());
+            dashboardTransaction.setSource(PAYMENT_PRI.name());
             dashboardTransaction.setSourceId(payment.getPaymentId());
             dashboardTransaction.setAmount(payment.getPrincipalPayment());
             dashboardTransactionService.saveDashboardTransactions(dashboardTransaction);
@@ -95,7 +102,7 @@ public class DashboardService {
     }
 
     public void revertPayment(Long id) throws NotEnoughLoanableAmount {
-        DashboardTransaction dashboardTransaction = dashboardTransactionService.getDashboardTransaction(PAYMENT.name(),id);
+        DashboardTransaction dashboardTransaction = dashboardTransactionService.getDashboardTransaction(PAYMENT_PRI.name(),id);
         if (dashboardTransaction.getOperation().equals("Interest Payment")) {
             subtractAmountFromLoanableFund(dashboardTransaction.getAmount());
         } else if (dashboardTransaction.getOperation().equals("Principal Payment")) {
