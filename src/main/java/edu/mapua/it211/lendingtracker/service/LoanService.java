@@ -56,7 +56,7 @@ public class LoanService {
     public void reduceLoanBalance(Payment payment){
         if(!Objects.isNull( payment.getPrincipalPayment())) {
             Loan loan = loanRepository.findById(payment.getLoanId()).orElse(null);
-            BigDecimal newBalance = loan.getPrincipal().subtract(payment.getPrincipalPayment());
+            BigDecimal newBalance = loan.getBalance().subtract(payment.getPrincipalPayment());
             loanRepository.updateBalance(loan.getLoanId(), newBalance);
         }
     }

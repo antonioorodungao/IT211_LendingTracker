@@ -26,7 +26,7 @@ public class DashboardService {
 
     @Autowired
     DashboardTransactionService dashboardTransactionService;
-    
+
     public void initDashboard() {
         Dashboard dashboard = new Dashboard();
         dashboard.setLoanableFund(new BigDecimal(5000));
