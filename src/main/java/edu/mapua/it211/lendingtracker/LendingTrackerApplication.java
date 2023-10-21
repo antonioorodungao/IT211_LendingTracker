@@ -50,6 +50,7 @@ public class LendingTrackerApplication implements CommandLineRunner {
         paymentService.deleteAll();
         dashboardTransactionService.deleteAll();
         dashboardService.deleteAll();
+        mongoSequenceGenerator.resetAllSequence();
         dashboardService.initDashboard();
         addBorrowerProfiles();
     }
@@ -63,9 +64,12 @@ public class LendingTrackerApplication implements CommandLineRunner {
         loan.setBorrowerId(b1.getBorrowerId());
         loan.setBalance(new BigDecimal(1000));
         loan.setPrincipal(new BigDecimal(1000));
+        loan.setInterestRate(new BigDecimal(10));
+        loan.setAccruedInterest(new BigDecimal(0));
+        loan.setEarnedInterest(new BigDecimal(0));
         loan.setBalance(new BigDecimal(1000));
         loan.setDateDue(LocalDate.now().plusDays(7));
-        loan.setDateBorrowed(LocalDate.now());
+        loan.setDateBorrowed(LocalDate.now().minusMonths(2));
         loan = loanService.newLoan(loan);
 
         Payment p = new Payment();
@@ -77,11 +81,15 @@ public class LendingTrackerApplication implements CommandLineRunner {
         paymentService.save(p);
 
         loan = new Loan();
+        loan.setBorrowerId(b1.getBorrowerId());
         loan.setBalance(new BigDecimal(1000));
         loan.setPrincipal(new BigDecimal(1000));
+        loan.setInterestRate(new BigDecimal(10));
+        loan.setAccruedInterest(new BigDecimal(0));
+        loan.setEarnedInterest(new BigDecimal(0));
         loan.setBalance(new BigDecimal(1000));
         loan.setDateDue(LocalDate.now().plusDays(7));
-        loan.setDateBorrowed(LocalDate.now());
+        loan.setDateBorrowed(LocalDate.now().minusMonths(4));
         loan = loanService.newLoan(loan);
 
         p = new Payment();

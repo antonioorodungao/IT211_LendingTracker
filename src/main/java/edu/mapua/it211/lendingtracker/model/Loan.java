@@ -21,9 +21,12 @@ public class Loan {
     private Long borrowerId;
     private BigDecimal principal;
     private BigDecimal balance;
-    private BigDecimal accruedInterest;
     private BigDecimal interestRate;
+    private BigDecimal accruedInterest;
+    private BigDecimal earnedInterest;
+    private LocalDate dateLastPayment;
     private LocalDate dateBorrowed;
     private LocalDate dateDue;
+
     private String status;
 }
