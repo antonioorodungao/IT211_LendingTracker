@@ -66,7 +66,7 @@ public class LendingTrackerApplication implements CommandLineRunner {
         loan.setBalance(new BigDecimal(1000));
         loan.setDateDue(LocalDate.now().plusDays(7));
         loan.setDateBorrowed(LocalDate.now());
-        loan = loanService.save(loan);
+        loan = loanService.newLoan(loan);
 
         Payment p = new Payment();
         p.setInterestPayment(new BigDecimal(100));
@@ -82,7 +82,7 @@ public class LendingTrackerApplication implements CommandLineRunner {
         loan.setBalance(new BigDecimal(1000));
         loan.setDateDue(LocalDate.now().plusDays(7));
         loan.setDateBorrowed(LocalDate.now());
-        loan = loanService.save(loan);
+        loan = loanService.newLoan(loan);
 
         p = new Payment();
         p.setInterestPayment(new BigDecimal(100));

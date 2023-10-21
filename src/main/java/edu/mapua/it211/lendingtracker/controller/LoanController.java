@@ -42,9 +42,9 @@ public class LoanController {
 
     @PostMapping("/loan/add")
     public String addLoan(Loan loan, RedirectAttributes ra) {
-        ra.addAttribute("id", loan.getBorrowerId());
+        ra.addAttribute("borrowerId", loan.getBorrowerId());
         try {
-            loanService.save(loan);
+            loanService.newLoan(loan);
             ra.addFlashAttribute("message", "The loan has been added.");
         } catch (NotEnoughLoanableAmount e) {
             ra.addFlashAttribute("error", e.toString());
