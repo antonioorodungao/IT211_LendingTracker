@@ -1,11 +1,13 @@
 package edu.mapua.it211.lendingtracker.repository;
 
 import edu.mapua.it211.lendingtracker.model.Dashboard;
+import edu.mapua.it211.lendingtracker.model.Loan;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.mongodb.repository.Update;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public interface DashboardRepository extends MongoRepository<Dashboard, Long> {
 
@@ -22,4 +24,5 @@ public interface DashboardRepository extends MongoRepository<Dashboard, Long> {
     //db.dashboard.findOne({dashboardId: 1})
     @Query("{dashboardId: ?0}")
     Dashboard find(Long dashboardId);
+
 }

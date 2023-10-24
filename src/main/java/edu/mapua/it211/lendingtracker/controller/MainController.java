@@ -34,6 +34,7 @@ public class MainController {
         model.addAttribute("dashboard", ds);
         model.addAttribute("transactions", transactions);
         model.addAttribute("fund", f);
+        model.addAttribute("lapsedLoans", dashboardService.getLapsedLoans());
         return "index";
     }
 

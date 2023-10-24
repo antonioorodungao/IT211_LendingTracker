@@ -131,6 +131,46 @@
     </table>
 </div>
 
+<div class="container-fluid text-center ">
+    <div><h1>Lapsed Loans</h1></div>
+    <div class="table-responsive-sm">
+        <table class="table table-bordered">
+            <thead class="table-dark">
+            <tr>
+                <th class="fs-6 fs-sm-3 fs-md-2">Loan ID</th>
+                <th class="fs-6 fs-sm-3 fs-md-2">Borrower ID</th>
+<!--                <th class="fs-6 fs-sm-3 fs-md-2">Principal</th>-->
+                <th class="fs-6 fs-sm-3 fs-md-2">Balance</th>
+<!--                <th class="fs-6 fs-sm-3 fs-md-2">Interest Rate</th>-->
+<!--                <th class="fs-6 fs-sm-3 fs-md-2">Borrowed Date</th>-->
+                <th class="fs-6 fs-sm-3 fs-md-2">Accrued Interest</th>
+                <th class="fs-6 fs-sm-3 fs-md-2">Due Date</th>
+                <th class="fs-6 fs-sm-3 fs-md-2">Status</th>
+                <th class="fs-6 fs-sm-3 fs-md-2">Operation</th>
+            </tr>
+            </thead>
+            <tbody>
+            <th:block th:each="loan : ${lapsedLoans}">
+                <tr>
+                    <td class="fs-6 fs-sm-3 fs-md-2">[[${loan.loanId}]]</td>
+                    <td class="fs-6 fs-sm-3 fs-md-2">[[${loan.borrowerId}]]</td>
+<!--                    <td class="fs-6 fs-sm-3 fs-md-2">[[${loan.principal}]]</td>-->
+                    <td class="fs-6 fs-sm-3 fs-md-2">₱ [[${loan.balance}]]</td>
+<!--                    <td class="fs-6 fs-sm-3 fs-md-2">[[${loan.interestRate}]]</td>-->
+<!--                    <td class="fs-6 fs-sm-3 fs-md-2">[[${loan.dateBorrowed}]]</td>-->
+                    <td class="fs-6 fs-sm-3 fs-md-2">₱ [[${loan.accruedInterest}]]</td>
+                    <td class="fs-6 fs-sm-3 fs-md-2">[[${loan.dateDue}]]</td>
+                    <td class="fs-6 fs-sm-3 fs-md-2">[[${loan.status}]]</td>
+                    <td class="fs-6 fs-sm-3 fs-md-2">
+                        <a th:href="@{/loan/view(borrowerId=${loan.borrowerId}, loanId=${loan.loanId})}">View</a>
+                    </td>
+                </tr>
+            </th:block>
+            </tbody>
+        </table>
+    </div>
+</div>
+
 <div class="container-fluid text-center">
 
     <h3>Transactions</h3>
@@ -158,7 +198,7 @@
                     <td>[[${transaction.transactionId}]]</td>
                     <td>[[${transaction.source}]]</td>
                     <td>[[${transaction.operation}]]</td>
-                    <td>[[${transaction.amount}]]</td>
+                    <td>₱ [[${transaction.amount}]]</td>
                 </tr>
             </th:block>
             </tbody>

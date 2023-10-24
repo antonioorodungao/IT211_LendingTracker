@@ -32,10 +32,18 @@ public interface LoanRepository extends MongoRepository<Loan, Long> {
     //db.loan.update({'loanId': <param1>}, {$set: {'accruedInterest': <param2>}})
     @Query("{ 'loanId' : ?0 }")
     @Update("{$set: {'earnedInterest': ?1}}")
-    void updateEarnedInterest(Long loanId, BigDecimal newEarnedInterest );
+    void updateEarnedInterest(Long loanId, BigDecimal newEarnedInterest);
 
     //db.loan.update({'loanId': <param1>}, {$set: {'accruedInterest': <param2>}})
     @Query("{ 'loanId' : ?0 }")
     @Update("{$set: {'accruedInterest': ?1}}")
     void updateAccruedInterest(Long loanId, BigDecimal accruedInterest);
+
+//    //db.loan.find({'accruedInterest': {$gt:0}})
+////    @Query("{'accruedInterest' : {$gt:0}}")
+//    List<Loan> findLapsedLoans();
+
+    //db.loan.find({'status': <param1>})
+    @Query("{ 'status' : ?0 }")
+    List<Loan> findAllByStatus(String status);
 }
