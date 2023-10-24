@@ -63,4 +63,8 @@ class DashboardServiceTest {
     @Test
     void registerLoan() {
     }
+
+    @Test
+    void getLapsedLoans() {
+    }
 }

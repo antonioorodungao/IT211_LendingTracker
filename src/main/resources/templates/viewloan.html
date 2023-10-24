@@ -84,11 +84,11 @@
                 <tr>
                     <td>[[${loan.loanId}]]</td>
                     <td>[[${loan.borrowerId}]]</td>
-                    <td>[[${loan.principal}]]</td>
-                    <td>[[${loan.balance}]]</td>
-                    <td>[[${loan.interestRate}]]</td>
-                    <td>[[${loan.accruedInterest}]]</td>
-                    <td>[[${loan.earnedInterest}]]</td>
+                    <td>₱ [[${loan.principal}]]</td>
+                    <td>₱ [[${loan.balance}]]</td>
+                    <td>[[${loan.interestRate}]] %</td>
+                    <td>₱ [[${loan.accruedInterest}]]</td>
+                    <td>₱ [[${loan.earnedInterest}]]</td>
                     <td>[[${loan.dateBorrowed}]]</td>
                     <td>[[${loan.dateDue}]]</td>
                     <td>[[${loan.status}]]</td>
@@ -153,8 +153,8 @@
                 <tr>
                     <td>[[${payment.paymentId}]]</td>
                     <td>[[${payment.paymentDate}]]</td>
-                    <td>[[${payment.principalPayment}]]</td>
-                    <td>[[${payment.interestPayment}]]</td>
+                    <td>₱ [[${payment.principalPayment}]]</td>
+                    <td>₱ [[${payment.interestPayment}]]</td>
                     <td><a th:href="@{/payment/delete(paymentId = ${payment.paymentId}, borrowerId=${newPayment.borrowerId}, loanId=${newPayment.loanId})}">Delete Payment</a> </td>
                 </tr>
             </th:block>

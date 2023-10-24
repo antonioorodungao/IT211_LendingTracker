@@ -53,6 +53,8 @@ public class LendingTrackerApplication implements CommandLineRunner {
         mongoSequenceGenerator.resetAllSequence();
         dashboardService.initDashboard();
         addBorrowerProfiles();
+        dashboardService.getLapsedLoans();
+        System.out.println(dashboardService.getLapsedLoans());
     }
 
     void addBorrowerProfiles() throws NotEnoughLoanableAmount {

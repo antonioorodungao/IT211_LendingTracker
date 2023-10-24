@@ -1,12 +1,14 @@
 package edu.mapua.it211.lendingtracker.service;
 
 
+import edu.mapua.it211.lendingtracker.Utils;
 import edu.mapua.it211.lendingtracker.exceptions.NotEnoughLoanableAmount;
 import edu.mapua.it211.lendingtracker.model.Dashboard;
 import edu.mapua.it211.lendingtracker.model.DashboardTransaction;
 import edu.mapua.it211.lendingtracker.model.Loan;
 import edu.mapua.it211.lendingtracker.model.Payment;
 import edu.mapua.it211.lendingtracker.repository.DashboardRepository;
+import edu.mapua.it211.lendingtracker.repository.LoanRepository;
 import jakarta.annotation.PostConstruct;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +16,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static edu.mapua.it211.lendingtracker.Utils.Sources.*;
 
@@ -26,6 +30,9 @@ public class DashboardService {
 
     @Autowired
     DashboardTransactionService dashboardTransactionService;
+
+    @Autowired
+    LoanRepository loanRepository;
 
     public void initDashboard() {
         Dashboard dashboard = new Dashboard();
@@ -56,7 +63,7 @@ public class DashboardService {
 
     public void withdrawAmountFromLoanableFund(BigDecimal additionalAmount) throws NotEnoughLoanableAmount {
         Dashboard d = dashboardRepository.find(1L);
-        if(d.getLoanableFund().subtract(additionalAmount).compareTo(BigDecimal.ZERO) < 0){
+        if (d.getLoanableFund().subtract(additionalAmount).compareTo(BigDecimal.ZERO) < 0) {
             throw new NotEnoughLoanableAmount();
         }
         dashboardRepository.updateLoanableFund(d.getLoanableFund().subtract(additionalAmount));
@@ -102,12 +109,18 @@ public class DashboardService {
     }
 
     public void revertPayment(Long id) throws NotEnoughLoanableAmount {
-        DashboardTransaction dashboardTransaction = dashboardTransactionService.getDashboardTransaction(PAYMENT_PRI.name(),id);
+        DashboardTransaction dashboardTransaction = dashboardTransactionService.getDashboardTransaction(PAYMENT_PRI.name(), id);
         if (dashboardTransaction.getOperation().equals("Interest Payment")) {
             subtractAmountFromLoanableFund(dashboardTransaction.getAmount());
         } else if (dashboardTransaction.getOperation().equals("Principal Payment")) {
             subtractAmountFromLoanableFund(dashboardTransaction.getAmount());
         }
         dashboardTransactionService.deleteDashboardTransaction(dashboardTransaction.getTransactionId());
+    }
+
+    //get all lapsed loans
+    public List<Loan> getLapsedLoans() {
+        List<Loan> openLoans = loanRepository.findAllByStatus(Utils.LoanStatus.OPEN.toString());
+        return openLoans.stream().filter(loan -> loan.getAccruedInterest().compareTo(BigDecimal.ZERO) > 0).collect(Collectors.toList());
     }
 }
