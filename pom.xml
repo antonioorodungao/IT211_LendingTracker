@@ -10,7 +10,7 @@
     </parent>
     <groupId>edu.mapua.it211</groupId>
     <artifactId>LendingTracker</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <name>LendingTracker</name>
     <description>LendingTracker</description>
     <properties>
