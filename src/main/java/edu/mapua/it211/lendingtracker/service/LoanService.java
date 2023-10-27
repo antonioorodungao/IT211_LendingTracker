@@ -44,6 +44,7 @@ public class LoanService {
         loan.setBalance(loan.getPrincipal());
         loan.setStatus(OPEN.toString());
         loan.setAccruedInterest(new BigDecimal(0));
+        loan.setEarnedInterest(new BigDecimal(0));
         if(loan.getDateBorrowed() == null)
             loan.setDateBorrowed(LocalDate.now());
         dashboardService.registerLoan(loan);
