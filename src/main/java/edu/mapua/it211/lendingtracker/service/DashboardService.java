@@ -40,6 +40,7 @@ public class DashboardService {
         dashboard.setLoanableFund(new BigDecimal(5000));
         dashboard.setTotalRevenue(BigDecimal.ZERO);
         dashboard.setTotalInterest(BigDecimal.ZERO);
+        dashboard.setTotalAmountLoaned(BigDecimal.ZERO);
         dashboard.setDashboardId(1L);
         Dashboard d = dashboardRepository.save(dashboard);
     }
@@ -96,9 +97,11 @@ public class DashboardService {
             dashboardTransaction.setAmount(payment.getPrincipalPayment());
             dashboardTransactionService.saveDashboardTransactions(dashboardTransaction);
             addAmountToLoanableFund(payment.getPrincipalPayment());
+            updateTotalLoaned(payment.getPrincipalPayment().negate());
         }
     }
 
+    @Transactional
     public void registerLoan(Loan loan) throws NotEnoughLoanableAmount {
         subtractAmountFromLoanableFund(loan.getPrincipal());
         DashboardTransaction dashboardTransaction = new DashboardTransaction();
@@ -107,6 +110,7 @@ public class DashboardService {
         dashboardTransaction.setSourceId(loan.getLoanId());
         dashboardTransaction.setAmount(loan.getPrincipal().negate());
         dashboardTransactionService.saveDashboardTransactions(dashboardTransaction);
+        updateTotalLoaned(loan.getPrincipal());
 
     }
 
@@ -125,5 +129,10 @@ public class DashboardService {
     public List<Loan> getLapsedLoans() {
         List<Loan> openLoans = loanRepository.findAllByStatus(Utils.LoanStatus.OPEN.toString());
         return openLoans.stream().filter(loan -> loan.getAccruedInterest().compareTo(BigDecimal.ZERO) > 0).collect(Collectors.toList());
+    }
+
+    public void updateTotalLoaned(BigDecimal amount) {
+        Dashboard d = dashboardRepository.find(1L);
+        dashboardRepository.updateTotalAmountLoaned(d.getTotalAmountLoaned().add(amount));
     }
 }

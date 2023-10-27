@@ -54,9 +54,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/listdebtors">Borrowers</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Reports</a>
-                </li>
+<!--                <li class="nav-item">-->
+<!--                    <a class="nav-link" href="#">Reports</a>-->
+<!--                </li>-->
             </ul>
         </div>
     </div>
@@ -141,8 +141,8 @@
             <table class="table table-bordered">
                 <thead class="table-dark">
                 <tr>
-                    <th class="fs-6 fs-sm-3 fs-md-2">Loan ID</th>
-                    <th class="fs-6 fs-sm-3 fs-md-2">Borrower ID</th>
+<!--                    <th class="fs-6 fs-sm-3 fs-md-2">Loan ID</th>-->
+<!--                    <th class="fs-6 fs-sm-3 fs-md-2">Borrower ID</th>-->
                     <th class="fs-6 fs-sm-3 fs-md-2">Principal</th>
                     <th class="fs-6 fs-sm-3 fs-md-2">Balance</th>
                     <th class="fs-6 fs-sm-3 fs-md-2">Interest Rate</th>
@@ -155,8 +155,8 @@
                 <tbody>
                 <th:block th:each="loan : ${borrowerLoans}">
                     <tr>
-                        <td class="fs-6 fs-sm-3 fs-md-2">[[${loan.loanId}]]</td>
-                        <td class="fs-6 fs-sm-3 fs-md-2">[[${loan.borrowerId}]]</td>
+<!--                        <td class="fs-6 fs-sm-3 fs-md-2">[[${loan.loanId}]]</td>-->
+<!--                        <td class="fs-6 fs-sm-3 fs-md-2">[[${loan.borrowerId}]]</td>-->
                         <td class="fs-6 fs-sm-3 fs-md-2">₱ [[${loan.principal}]]</td>
                         <td class="fs-6 fs-sm-3 fs-md-2">₱ [[${loan.balance}]]</td>
                         <td class="fs-6 fs-sm-3 fs-md-2">[[${loan.interestRate}]]  %</td>

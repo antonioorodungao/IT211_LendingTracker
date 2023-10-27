@@ -25,6 +25,10 @@ public class MainController {
     DashboardTransactionService dashboardTransactionService;
 
 
+    @GetMapping("/")
+    public String redirectToHome(){
+        return "redirect:/home";
+    }
     @GetMapping("/home")
     public String showHomePage(Model model) {
         System.out.println("Redirecting to home.");
