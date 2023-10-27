@@ -2,6 +2,7 @@ package edu.mapua.it211.lendingtracker;
 
 import edu.mapua.it211.lendingtracker.components.MongoSequenceGenerator;
 import edu.mapua.it211.lendingtracker.exceptions.NotEnoughLoanableAmount;
+import edu.mapua.it211.lendingtracker.exceptions.PaymentException;
 import edu.mapua.it211.lendingtracker.model.Borrower;
 import edu.mapua.it211.lendingtracker.model.Loan;
 import edu.mapua.it211.lendingtracker.model.Payment;
@@ -11,12 +12,14 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @SpringBootApplication
 @EnableMongoRepositories
+@EnableTransactionManagement
 public class LendingTrackerApplication implements CommandLineRunner {
 
     @Autowired
@@ -57,7 +60,7 @@ public class LendingTrackerApplication implements CommandLineRunner {
         System.out.println(dashboardService.getLapsedLoans());
     }
 
-    void addBorrowerProfiles() throws NotEnoughLoanableAmount {
+    void addBorrowerProfiles() throws NotEnoughLoanableAmount, PaymentException {
         Borrower b1 = borrowerService.save(new Borrower("Antonio", "Dungao", "antoniodungao@yahoo.com", "09123456789"));
         borrowerService.save(new Borrower("John", "Doe", "johndoe@yahoo.com", "09123456789"));
         borrowerService.save(new Borrower("Jane", "Doe", "janedoe@yahoo.com", "09123456789"));
@@ -80,7 +83,7 @@ public class LendingTrackerApplication implements CommandLineRunner {
         p.setPaymentDate(LocalDate.now());
         p.setBorrowerId(loan.getBorrowerId());
         p.setLoanId(loan.getLoanId());
-        paymentService.save(p);
+        paymentService.save(p, true);
 
         loan = new Loan();
         loan.setBorrowerId(b1.getBorrowerId());
@@ -100,7 +103,7 @@ public class LendingTrackerApplication implements CommandLineRunner {
         p.setPaymentDate(LocalDate.now());
         p.setBorrowerId(loan.getBorrowerId());
         p.setLoanId(loan.getLoanId());
-        paymentService.save(p);
+        paymentService.save(p, true);
 
     }
 }

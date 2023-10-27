@@ -13,6 +13,7 @@ import jakarta.annotation.PostConstruct;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.math.BigDecimal;
@@ -74,6 +75,7 @@ public class DashboardService {
         dashboardRepository.updateTotalRevenue(d.getTotalRevenue().add(additionalAmount));
     }
 
+    @Transactional
     public void registerPayment(@NotNull Payment payment) {
         if (!Objects.isNull(payment.getInterestPayment()) && !payment.getInterestPayment().equals(BigDecimal.ZERO)) {
             DashboardTransaction dashboardTransaction = new DashboardTransaction();
@@ -108,6 +110,7 @@ public class DashboardService {
 
     }
 
+    @Transactional
     public void revertPayment(Long id) throws NotEnoughLoanableAmount {
         DashboardTransaction dashboardTransaction = dashboardTransactionService.getDashboardTransaction(PAYMENT_PRI.name(), id);
         if (dashboardTransaction.getOperation().equals("Interest Payment")) {
