@@ -56,9 +56,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/listdebtors">Borrowers</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Reports</a>
-                </li>
+<!--                <li class="nav-item">-->
+<!--                    <a class="nav-link" href="#">Reports</a>-->
+<!--                </li>-->
             </ul>
         </div>
     </div>
@@ -124,21 +124,21 @@
         </thead>
         <tbody>
         <tr>
-            <td>[[${dashboard.loanableFund}]]</td>
-            <td>[[${dashboard.totalAmountLoaned}]]</td>
-            <td>[[${dashboard.totalRevenue}]]</td>
+            <td>₱ [[${dashboard.loanableFund}]]</td>
+            <td>₱ [[${dashboard.totalAmountLoaned}]]</td>
+            <td>₱ [[${dashboard.totalRevenue}]]</td>
         </tbody>
     </table>
 </div>
 
 <div class="container-fluid text-center ">
-    <div><h1>Lapsed Loans</h1></div>
+    <div><h3>Lapsed Loans</h3></div>
     <div class="table-responsive-sm">
         <table class="table table-bordered">
             <thead class="table-dark">
             <tr>
-                <th class="fs-6 fs-sm-3 fs-md-2">Loan ID</th>
-                <th class="fs-6 fs-sm-3 fs-md-2">Borrower ID</th>
+<!--                <th class="fs-6 fs-sm-3 fs-md-2">Loan ID</th>-->
+<!--                <th class="fs-6 fs-sm-3 fs-md-2">Borrower ID</th>-->
 <!--                <th class="fs-6 fs-sm-3 fs-md-2">Principal</th>-->
                 <th class="fs-6 fs-sm-3 fs-md-2">Balance</th>
 <!--                <th class="fs-6 fs-sm-3 fs-md-2">Interest Rate</th>-->
@@ -152,8 +152,8 @@
             <tbody>
             <th:block th:each="loan : ${lapsedLoans}">
                 <tr>
-                    <td class="fs-6 fs-sm-3 fs-md-2">[[${loan.loanId}]]</td>
-                    <td class="fs-6 fs-sm-3 fs-md-2">[[${loan.borrowerId}]]</td>
+<!--                    <td class="fs-6 fs-sm-3 fs-md-2">[[${loan.loanId}]]</td>-->
+<!--                    <td class="fs-6 fs-sm-3 fs-md-2">[[${loan.borrowerId}]]</td>-->
 <!--                    <td class="fs-6 fs-sm-3 fs-md-2">[[${loan.principal}]]</td>-->
                     <td class="fs-6 fs-sm-3 fs-md-2">₱ [[${loan.balance}]]</td>
 <!--                    <td class="fs-6 fs-sm-3 fs-md-2">[[${loan.interestRate}]]</td>-->
@@ -178,9 +178,9 @@
         <table class="table table-bordered">
             <thead class="table-dark">
             <tr>
-                <th>
-                    Transaction Id
-                </th>
+<!--                <th>-->
+<!--                    Transaction Id-->
+<!--                </th>-->
                 <th>
                     Source
                 </th>
@@ -195,7 +195,7 @@
             <tbody>
             <th:block th:each="transaction : ${transactions}">
                 <tr>
-                    <td>[[${transaction.transactionId}]]</td>
+<!--                    <td>[[${transaction.transactionId}]]</td>-->
                     <td>[[${transaction.source}]]</td>
                     <td>[[${transaction.operation}]]</td>
                     <td>₱ [[${transaction.amount}]]</td>

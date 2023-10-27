@@ -25,4 +25,8 @@ public interface DashboardRepository extends MongoRepository<Dashboard, Long> {
     @Query("{dashboardId: ?0}")
     Dashboard find(Long dashboardId);
 
+    @Query("{}")
+    @Update("{$set: { 'totalAmountLoaned' : ?0 }}")
+
+    void updateTotalAmountLoaned(BigDecimal amount);
 }

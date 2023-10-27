@@ -44,9 +44,9 @@ public class PaymentService {
 
     @Transactional
     public void save(Payment payment, Boolean preload) throws RuntimeException {
-        dashboardService.registerPayment(payment);
         payment.setPaymentId(mongoSequenceGenerator.generateSequence("sequencepaymentid"));
         payment.setPaymentDate(LocalDate.now());
+        dashboardService.registerPayment(payment);
         paymentRepository.save(payment);
         if(transactionsTest && !preload){
             throw new RuntimeException("Testing Failed payment transaction");
@@ -54,5 +54,6 @@ public class PaymentService {
         loanService.reduceLoanBalance(payment);
         loanService.addToEarnedInterest(payment);
         loanService.updateAccruedInterest(payment.getLoanId());
+
     }
 }
