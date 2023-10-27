@@ -8,6 +8,7 @@ import edu.mapua.it211.lendingtracker.model.Payment;
 import edu.mapua.it211.lendingtracker.repository.LoanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -37,11 +38,14 @@ public class LoanService {
         return loanRepository.findById(id).orElse(null);
     }
 
+    @Transactional
     public Loan newLoan(Loan loan) throws NotEnoughLoanableAmount {
         loan.setLoanId(mongoSequenceGenerator.generateSequence("sequenceloanid"));
         loan.setBalance(loan.getPrincipal());
         loan.setStatus(OPEN.toString());
-//        loan.setDateBorrowed(LocalDate.now());
+        loan.setAccruedInterest(new BigDecimal(0));
+        if(loan.getDateBorrowed() == null)
+            loan.setDateBorrowed(LocalDate.now());
         dashboardService.registerLoan(loan);
         return loanRepository.save(loan);
     }

@@ -1,6 +1,7 @@
 package edu.mapua.it211.lendingtracker.controller;
 
 import edu.mapua.it211.lendingtracker.exceptions.NotEnoughLoanableAmount;
+import edu.mapua.it211.lendingtracker.exceptions.PaymentException;
 import edu.mapua.it211.lendingtracker.model.Payment;
 import edu.mapua.it211.lendingtracker.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +20,15 @@ public class PaymentController {
     @PostMapping("/payment/add")
     public String addPayment(Payment payment, RedirectAttributes ra) {
 
-        paymentService.save(payment);
+        try {
+            paymentService.save(payment, false);
+            ra.addFlashAttribute("message", "The payment has been added.");
+        } catch (RuntimeException e) {
+            ra.addFlashAttribute("error", "There is an error during payment.");
+        }
         ra.addAttribute("borrowerId", payment.getBorrowerId());
         ra.addAttribute("loanId", payment.getLoanId());
-        ra.addFlashAttribute("message", "The payment has been added.");
+
         return "redirect:/loan/view";
     }
 
